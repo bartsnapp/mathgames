@@ -6,6 +6,7 @@ __lua__
 
 
 -- based on menu code by colin heyl (kql1n)
+-- https://www.lexaloffle.com/bbs/?tid=27735
 -- currently doesn't work...
 --[[
 options={
