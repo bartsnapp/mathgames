@@ -103,6 +103,20 @@ function draw_plane()
 	 llama(x,y)
 end
 
+-- cylinder
+function draw_cylinder()
+	 cls()
+	 print("cylinder",10,2)
+	 print(
+	 "press z to go back to menu",
+	 10,121)
+	 clip(3,8,121,111)
+	 map(0,0,0,0,16,8)
+	 map(0,0,0,56,16,8)
+	 llama(x,y)
+end
+
+
 -- torus
 function draw_torus()
 	 cls()
@@ -122,6 +136,10 @@ function update_menu()
  if (btnp(4) and select==0) 
 	then 
 		state="plane"
+	end
+	if (btnp(4) and select==1) 
+	then 
+		state="cylinder"
 	end
 	if (btnp(4) and select==3) 
 	then 
@@ -144,6 +162,15 @@ function update_plane()
 end
 
 
+function update_cylinder()
+	if btn(0) then x=(x-1)%128 end
+	if btn(1) then x=(x+1)%128 end
+	if btn(2) then y=max(y-1,11) end
+	if btn(3) then y=min(y+1,91) end	
+	if btnp(4) then state="menu" end
+end
+
+
 function update_torus()
 	if btn(0) then x=(x-1)%128 end
 	if btn(1) then x=(x+1)%128 end
@@ -159,6 +186,8 @@ function _update()
 		update_menu()
 	elseif state=="plane" then
 		update_plane()
+	elseif state=="cylinder" then
+		update_cylinder()
 	elseif state=="torus" then
 		update_torus()
 	end
@@ -169,6 +198,8 @@ function _draw()
 		draw_menu()
 	elseif state=="plane" then
 		draw_plane()
+	elseif state=="cylinder" then
+		draw_cylinder()
 	elseif state=="torus" then
 		draw_torus()
 	end
