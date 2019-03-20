@@ -9,7 +9,7 @@ function _init()
 	state="menu"
 	select=0 -- menu item selected
 	facing="left"
-	x=59 y=59
+	x=47 y=59
 	palt(13,true)
 	palt(0,false)		
 end	
@@ -20,77 +20,23 @@ end
 function llama(x,y)
 	 if btn(1) or facing=="right"
 	 then facing="right"
-	 	if 0<x and x<127 
-	 	then
-   	for i=4,1,-1 do 
-		  	   spr(i,	
-		   	  (x+(3-i)*8)%128-4,
-		    	 y%128-4,1,1,true)
-		 	end 
-		 	for i=20,17,-1 do
-		  	   spr(i,
-		   	  (x+(19-i)*8)%128-4,
-		    	 (y+8)%128-4,1,1,true)
-		 	end	
-		 	for i=36,33,-1 do
-		  	   spr(i,
-		   	  (x+(35-i)*8)%128-4,
-		    	 (y+16)%128-4,1,1,true)
-		 	end
-		 	for i=52,49,-1 do
-		  	   spr(i,
-		   	  (x+(51-i)*8)%128-4,
-		    	 (y+24)%128-4,1,1,true)
-		 	end
-		 else
-		 	y=127-y
-		 	for i=4,1,-1 do 
-		  	   spr(i,	
-		   	  (x+(3-i)*8)%128-4,
-		    	 (y+16)%128-4,1,1,true,true)
-		 	end 
-		 	for i=20,17,-1 do
-		  	   spr(i,
-		   	  (x+(19-i)*8)%128-4,
-		    	 (y+8)%128-4,1,1,true,true)
-		 	end	
-		 	for i=36,33,-1 do
-		  	   spr(i,
-		   	  (x+(35-i)*8)%128-4,
-		    	 (y+1)%128-4,1,1,true,true)
-		 	end
-		 	for i=52,49,-1 do
-		  	   spr(i,
-		   	  (x+(51-i)*8)%128-4,
-		    	 (y-7)%128-4,1,1,true,true)
-		 	end
-		 end
+	 	if 0<=x and x<=128 
+ 		then
+ 		spr(1,x,y-16,4,4,true)
+ 		else
+ 		spr(1,x,114-(y-16),4,4,true,true) 
+		end
 	end
-	if btn(0) or facing=='left'
-	  then facing = "left"
-		 for i=1,4 do 
-		     spr(i,
-		     (x+(i-2)*8)%128-4,
-		     y%128-4)
-		 end 
-		 for i=17,20 do
-		     spr(i,
-		     (x+(i-18)*8)%128-4,
-		     (y+8)%128-4)
-		 end	
-		 for i=33,36 do
-		     spr(i,
-		     (x+(i-34)*8)%128-4,
-		     (y+16)%128-4)
-		 end
-		 for i=49,52 do
-		     spr(i,
-		     (x+(i-50)*8)%128-4,
-		     (y+24)%128-4)
-		 end
+	if btn(0) or facing=="left"
+	 then facing="left"
+	 	if 0<=x and x<=128 
+ 		then
+	 	spr(1,x,(y-16),4,4)	
+	 	else
+	 	spr(1,x,114-(y-16),4,4,false,true)
+		end
 	end
 end
-
 -->8
 -- draw commands
 
@@ -155,6 +101,7 @@ function draw_mobius()
 	 map(0,0,0,0,16,8)
 	 map(0,0,0,56,16,8)
 	 llama(x,y)
+	 print(x,100,90)
 end
 
 
@@ -202,10 +149,10 @@ end
 
 
 function update_plane()
-	if btn(0) then x=max(x-1,13) end
-	if btn(1) then x=min(x+1,106) end
-	if btn(2) then y=max(y-1,11) end
-	if btn(3) then y=min(y+1,91) end	
+	if btn(0) then x=max(x-1,17) end
+	if btn(1) then x=min(x+1,110) end
+	if btn(2) then y=max(y-1,23) end
+	if btn(3) then y=min(y+1,103) end	
 	if btnp(4) then state="menu" end
 end
 
@@ -213,21 +160,23 @@ end
 function update_cylinder()
 	if btn(0) then x=(x-1)%128 end
 	if btn(1) then x=(x+1)%128 end
-	if btn(2) then y=max(y-1,11) end
-	if btn(3) then y=min(y+1,91) end	
+	if btn(2) then y=max(y-1,23) end
+	if btn(3) then y=min(y+1,103) end		
 	if btnp(4) then state="menu" end
 end
 
 
 function update_mobius()
 	if btn(0) then 
-		x=max(x-1,-187) 
+		x=max(x-1,-127) 
 	end
 	if btn(1) then 
-		x=min(x+1,187) 
+		x=min(x+1,256) 
 	end
-	if btn(2) then y=max(y-1,11) end
-	if btn(3) then y=min(y+1,91) end	
+	if x==256 then x=0 end
+	if x==-127 then x=127 end
+ if btn(2) then y=max(y-1,23) end
+	if btn(3) then y=min(y+1,103) end		
 	if btnp(4) then state="menu" end
 end
 
