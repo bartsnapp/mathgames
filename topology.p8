@@ -19,8 +19,8 @@ end
 
 function llama(x,y)
 	 if (btn(1) or facing=="right")
-   	    then facing="right"
-   	    	 for i=4,1,-1 do 
+	 then facing="right"
+   for i=4,1,-1 do 
 		     spr(i,	
 		     (x+(3-i)*8)%128-4,
 		     y%128-4,1,1,true)
@@ -40,8 +40,9 @@ function llama(x,y)
 		     (x+(51-i)*8)%128-4,
 		     (y+24)%128-4,1,1,true)
 		 end
-	elseif (btn(0) or facing=='left')
-	       then facing = "left"
+	end
+	if (btn(0) or facing=='left')
+	  then facing = "left"
 		 for i=1,4 do 
 		     spr(i,
 		     (x+(i-2)*8)%128-4,
