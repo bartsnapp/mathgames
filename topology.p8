@@ -18,30 +18,55 @@ end
 -- llama code
 
 function llama(x,y)
-	 if (btn(1) or facing=="right")
+	 if btn(1) or facing=="right"
 	 then facing="right"
-   for i=4,1,-1 do 
-		     spr(i,	
-		     (x+(3-i)*8)%128-4,
-		     y%128-4,1,1,true)
-		 end 
-		 for i=20,17,-1 do
-		     spr(i,
-		     (x+(19-i)*8)%128-4,
-		     (y+8)%128-4,1,1,true)
-		 end	
-		 for i=36,33,-1 do
-		     spr(i,
-		     (x+(35-i)*8)%128-4,
-		     (y+16)%128-4,1,1,true)
-		 end
-		 for i=52,49,-1 do
-		     spr(i,
-		     (x+(51-i)*8)%128-4,
-		     (y+24)%128-4,1,1,true)
+	 	if 0<x and x<127 
+	 	then
+   	for i=4,1,-1 do 
+		  	   spr(i,	
+		   	  (x+(3-i)*8)%128-4,
+		    	 y%128-4,1,1,true)
+		 	end 
+		 	for i=20,17,-1 do
+		  	   spr(i,
+		   	  (x+(19-i)*8)%128-4,
+		    	 (y+8)%128-4,1,1,true)
+		 	end	
+		 	for i=36,33,-1 do
+		  	   spr(i,
+		   	  (x+(35-i)*8)%128-4,
+		    	 (y+16)%128-4,1,1,true)
+		 	end
+		 	for i=52,49,-1 do
+		  	   spr(i,
+		   	  (x+(51-i)*8)%128-4,
+		    	 (y+24)%128-4,1,1,true)
+		 	end
+		 else
+		 	y=127-y
+		 	for i=4,1,-1 do 
+		  	   spr(i,	
+		   	  (x+(3-i)*8)%128-4,
+		    	 (y+16)%128-4,1,1,true,true)
+		 	end 
+		 	for i=20,17,-1 do
+		  	   spr(i,
+		   	  (x+(19-i)*8)%128-4,
+		    	 (y+8)%128-4,1,1,true,true)
+		 	end	
+		 	for i=36,33,-1 do
+		  	   spr(i,
+		   	  (x+(35-i)*8)%128-4,
+		    	 (y+1)%128-4,1,1,true,true)
+		 	end
+		 	for i=52,49,-1 do
+		  	   spr(i,
+		   	  (x+(51-i)*8)%128-4,
+		    	 (y-7)%128-4,1,1,true,true)
+		 	end
 		 end
 	end
-	if (btn(0) or facing=='left')
+	if btn(0) or facing=='left'
 	  then facing = "left"
 		 for i=1,4 do 
 		     spr(i,
@@ -90,6 +115,7 @@ function draw_menu()
 	print(select,20,90)
 end
 
+
 -- finite plane
 function draw_plane()
 	 cls()
@@ -103,10 +129,25 @@ function draw_plane()
 	 llama(x,y)
 end
 
+
 -- cylinder
 function draw_cylinder()
 	 cls()
 	 print("cylinder",10,2)
+	 print(
+	 "press z to go back to menu",
+	 10,121)
+	 clip(3,8,121,111)
+	 map(0,0,0,0,16,8)
+	 map(0,0,0,56,16,8)
+	 llama(x,y)
+end
+
+
+-- mobius strip
+function draw_mobius()
+	 cls()
+	 print("mobius strip",10,2)
 	 print(
 	 "press z to go back to menu",
 	 10,121)
@@ -129,6 +170,9 @@ function draw_torus()
 	 map(0,0,0,56,16,8)
 	 llama(x,y)
 end
+
+
+
 -->8
 -- update commands
 
@@ -140,6 +184,10 @@ function update_menu()
 	if (btnp(4) and select==1) 
 	then 
 		state="cylinder"
+	end
+	if (btnp(4) and select==2) 
+	then 
+		state="mobius"
 	end
 	if (btnp(4) and select==3) 
 	then 
@@ -171,6 +219,19 @@ function update_cylinder()
 end
 
 
+function update_mobius()
+	if btn(0) then 
+		x=max(x-1,-187) 
+	end
+	if btn(1) then 
+		x=min(x+1,187) 
+	end
+	if btn(2) then y=max(y-1,11) end
+	if btn(3) then y=min(y+1,91) end	
+	if btnp(4) then state="menu" end
+end
+
+
 function update_torus()
 	if btn(0) then x=(x-1)%128 end
 	if btn(1) then x=(x+1)%128 end
@@ -188,6 +249,8 @@ function _update()
 		update_plane()
 	elseif state=="cylinder" then
 		update_cylinder()
+	elseif state=="mobius" then
+		update_mobius()
 	elseif state=="torus" then
 		update_torus()
 	end
@@ -200,6 +263,8 @@ function _draw()
 		draw_plane()
 	elseif state=="cylinder" then
 		draw_cylinder()
+	elseif state=="mobius" then
+		draw_mobius()
 	elseif state=="torus" then
 		draw_torus()
 	end
