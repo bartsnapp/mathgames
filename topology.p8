@@ -1,178 +1,140 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
+-- title and menu
 -- exploring surfaces
 -- bart snapp
 
+-- see https://pico-8.fandom.com/wiki/multiple_states_system
 
--- based on menu code by colin heyl (kql1n)
--- https://www.lexaloffle.com/bbs/?tid=27735
--- currently doesn't work...
---[[
-options={
-	"plane", 
-	"torus", 
-	"sphere",
-	"mobius strip", 
-	"klein bottle", 
-	"real projective plane"
-	}
+function _init()
+	state="menu"
+	select=0 -- menu item selected
+	facing="left"
+	x=59 y=59
+end	
 
-numberofoptions = 6
+-->8
+-- llama code
 
-// stores which menu item is currently selected
-selectedoption = 1 
-
-
-gamestate='menu'
-function _update()
-	cls()	
-	if(gamestate=='torus') then torus()
-	elseif(gamestate=='torus') then torus()
-	elseif(gamestate=='menu') then menu()
+function llama(x,y)
+	 if (btn(1) or facing=="right")
+   	    then facing="right"
+   	    	 for i=4,1,-1 do 
+		     spr(i,	
+		     (x+(3-i)*8)%128-4,
+		     y%128-4,1,1,true)
+		 end 
+		 for i=20,17,-1 do
+		     spr(i,
+		     (x+(19-i)*8)%128-4,
+		     (y+8)%128-4,1,1,true)
+		 end	
+		 for i=36,33,-1 do
+		     spr(i,
+		     (x+(35-i)*8)%128-4,
+		     (y+16)%128-4,1,1,true)
+		 end
+		 for i=52,49,-1 do
+		     spr(i,
+		     (x+(51-i)*8)%128-4,
+		     (y+24)%128-4,1,1,true)
+		 end
+	elseif (btn(0) or facing=='left')
+	       then facing = "left"
+		 for i=1,4 do 
+		     spr(i,
+		     (x+(i-2)*8)%128-4,
+		     y%128-4)
+		 end 
+		 for i=17,20 do
+		     spr(i,
+		     (x+(i-18)*8)%128-4,
+		     (y+8)%128-4)
+		 end	
+		 for i=33,36 do
+		     spr(i,
+		     (x+(i-34)*8)%128-4,
+		     (y+16)%128-4)
+		 end
+		 for i=49,52 do
+		     spr(i,
+		     (x+(i-50)*8)%128-4,
+		     (y+24)%128-4)
+		 end
 	end
 end
 
-function menu()
- // press up to move up the menu
- if(btnp(2)) then
- 	selectedoption-=1
- 
- // press down to move down the menu
- elseif(btnp(3)) then
- 	selectedoption+=1	
- 
- // press 🅾️ to select the menu item
- // this changes the gamestate strings
- // so now, the update runs that section instead
- elseif(btnp(4)) then
-  if(selectedoption==1)then
-   gamestate = 'torus'
-   
-  elseif(selectedoption==2)then
-   gamestate = 'torus'
-   
-  elseif(selectedoption==3)then
-   gamestate = 'torus'
- elseif(selectedoption==4)then
-   gamestate = 'torus'
+-->8
+-- draw commands
 
- elseif(selectedoption==5)then
-   gamestate = 'torus'
-
- elseif(selectedoption==6)then
-   gamestate = 'torus'
-
-  end
- end
-
- // this little section just makes sure
- // that your selection doesn't go
- // above or below the max/min 
- if(selectedoption < 1) then
-		selectedoption = 1
- elseif(selectedoption > numberofoptions) then
-	 selectedoption = numberofoptions
- end
-	
-	// write out each bit of menu text 
- for i=1,numberofoptions do
-		print(options[i],20,20+(12*i),7)
+function draw_menu()
+	options={
+		"finite plane",
+		"cylinder",
+		"mobius strip",
+		"torus",
+		"sphere",
+		"real projective plane"
+		}
+	cls()
+	rect(0,0,127,127,6)
+	rect(0,0,127,20,6)
+	print("top0logy explorer",10,9,6)
+	for i=1,#options do
+		print(options[i],10,33+10*(i-1),8)
 	end
-	
-	// places a sprite next to the
-	// selected menu item
-	spr(0,5,19+(12*selectedoption))
-	 
-	 
-	// placeholder example graphics
-	// just a title and screen border
- rect(0,0,127,127,6)
- rect(0,0,127,20,6)
- print('main menu',10,9,6)
+	print(options[select+1],10,33+10*(select),10)
+	print(select,20,90)
 end
-]]
 
+function draw_torus()
+	 cls()
+	 palt(13,true)
+	 palt(0,false)	
+	 map(0,0,0,0,16,8)
+	 map(0,0,0,64,16,8)
+	 llama(x,y)
+end
+-->8
+-- update commands
 
---function torus()
+function update_menu()
+	if (btnp(4) and select==3) 
+	then 
+		state="torus"
+	end
+	if btnp(3) then 
+		select=(select+1)%(#options)
+	elseif btnp(2) then 
+		select=(select-1)%(#options)
+	end
+end
 
-x=59 y=59
-
-function _update()
+function update_torus()
 	if (btn(0)) then x=(x-1)%128 end
 	if (btn(1)) then x=(x+1)%128 end
 	if (btn(2)) then y=(y-1)%128 end
 	if (btn(3)) then y=(y+1)%128 end	
 end
+-->8
+-- main udpate and draw
 
-
-facing = 'left'
+function _update()
+	if state=="menu" then
+		update_menu()
+	elseif state=="torus" then
+		update_torus()
+	end
+end
 
 function _draw()
-	palt(13,true)
-	palt(0,false)	
-	--rectfill(0,0,127,127,3)
-	map(0,0,0,0,16,8)
-	map(0,0,0,64,16,8)
-	if (btn(1) or facing=='right') then facing = 'right'
-		for i=4,1,-1 do 
-			spr(i,	
-				(x+(3-i)*8)%128-4,
-				y%128-4,1,1,true)
-		end 
-		for i=20,17,-1 do
-			spr(i,
-				(x+(19-i)*8)%128-4,
-				(y+8)%128-4,1,1,true)
-		end	
-		for i=36,33,-1 do
-			spr(i,
-				(x+(35-i)*8)%128-4,
-				(y+16)%128-4,1,1,true)
-		end
-		for i=52,49,-1 do
-			spr(i,
-				(x+(51-i)*8)%128-4,
-				(y+24)%128-4,1,1,true)
-		end
+	if state=="menu" then
+		draw_menu()
+	elseif state=="torus" then
+		draw_torus()
 	end
-	if (btn(0) or facing=='left') then facing = 'left'
-		--if (x%2==1) 
-			----then 
-				for i=1,4 do 
-					spr(i,
-					(x+(i-2)*8)%128-4,
-					y%128-4)
-				end 
-				for i=17,20 do
-					spr(i,
-					(x+(i-18)*8)%128-4,
-					(y+8)%128-4)
-				end	
-				for i=33,36 do
-					spr(i,
-					(x+(i-34)*8)%128-4,
-					(y+16)%128-4)
-				end
-				for i=49,52 do
-					spr(i,
-					(x+(i-50)*8)%128-4,
-					(y+24)%128-4)
-				end
-		end
-
-
-
-
-
-
-
-			--end
-			
-		--if (x%2==0) 
-			--then spr(5,x,y,4,4) end
 end
---end
 __gfx__
 00000000dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd33333333333333333323233300000000000000000000000000000000
 00000000ddddd0ddddddddddddddddddddddddddddddd0dddddddddddddddddddddddddd333333333333333332e8e23300000000000000000000000000000000
