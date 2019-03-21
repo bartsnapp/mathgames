@@ -10,7 +10,7 @@ function _init()
 	select=0 -- menu item selected
 	facing="left"
 	x=47 y=47
-	xx=67 yy=67-- to allow peaking across the slide
+	xx=79 yy=79-- to allow peaking across the slide
 	palt(13,true)
 	palt(0,false)		
 end	
@@ -18,7 +18,37 @@ end
 -->8
 -- llama code
 
-function llama(x,y)
+
+function llama(x,xx,y,yy)
+	 if (state=="plane" or
+   	 state=="cylinder" or
+   	 state=="torus")
+	 then
+	 llamaorientable(x,xx,y,yy)
+	 elseif state=="mobius"
+	 then
+	 llamamobius(x,xx,y,yy)
+	 end
+end
+
+function llamaorientable(x,xx,y,yy)
+	 if ((btn(0) or facing=="left"))
+	 then facing="left"
+ 	      spr(1,x,y,4,4)
+	      spr(1,xx-32,yy-32,4,4)
+	      spr(1,x,yy-32,4,4)
+	      spr(1,xx-32,y,4,4)
+	 end
+	 if ((btn(1) or facing=="right") and (not btn(0)))
+	 then facing="right"
+ 	      spr(1,x,y,4,4,true)
+	      spr(1,xx-32,yy-32,4,4,true)
+	      spr(1,x,yy-32,4,4,true)
+	      spr(1,xx-32,y,4,4,true)
+ 	 end
+end
+
+function llamamobius(x,xx,y,yy)
 	 if btn(0) or facing=="left"
 	 then facing="left"
 	 	if 0<=x and x<=105
@@ -75,7 +105,7 @@ function draw_menu()
 	cls()
 	rect(0,0,127,127,6)
 	rect(0,0,127,20,6)
-	print("top0logy explorer",10,9,6)
+	print("topology explorer",10,9,6)
 	for i=1,#options do
 		print(options[i],10,33+10*(i-1),8)
 	end
@@ -83,62 +113,31 @@ function draw_menu()
 	print(select,20,90)
 end
 
-
--- finite plane
-function draw_plane()
+-- tutorials
+function draw_surface()
 	 cls()
-	 print("finite plane",10,2)
-	 print(
-	 "press z to go back to menu",
-	 10,121)
-	 clip(3,8,121,111)
-	 map(0,0,0,0,16,8)
-	 map(0,0,0,56,16,8)
-	 llama(x,y)
+	 map(0,0,0,0,16,8)		
+	 map(0,0,0,64,16,8)
+	 if state=="plane" then
+	 print("finite plane",10,1,0)
+	 elseif state=="cylinder" then
+	 print("cylinder",10,1,0)
+	 elseif state=="mobius" then
+	 print("mobius strip",10,1,0)
+	 elseif state=="torus" then
+	 print("torus",10,1,0)
+	 end
+	 print("press z to go back to menu",
+	 10,122,0)
+	 --clip(-1,7,129,114)
+	 
+	 llama(x,xx,y,yy)
+	 print(x,20,90)
+	 print(xx,20,100)
+	 print(y,90,90)
+	 print(yy,90,100)
 end
 
-
--- cylinder
-function draw_cylinder()
-	 cls()
-	 print("cylinder",10,2)
-	 print(
-	 "press z to go back to menu",
-	 10,121)
-	 clip(3,8,121,111)
-	 map(0,0,0,0,16,8)
-	 map(0,0,0,56,16,8)
-	 llama(x,y)
-end
-
-
--- mobius strip
-function draw_mobius()
-	 cls()
-	 print("mobius strip",10,2)
-	 print(
-	 "press z to go back to menu",
-	 10,121)
-	 clip(3,8,121,111)
-	 map(0,0,0,0,16,8)
-	 map(0,0,0,56,16,8)
-	 llama(x,y)
-	 print(x,100,90)
-end
-
-
--- torus
-function draw_torus()
-	 cls()
-	 print("torus",10,2)
-	 print(
-	 "press z to go back to menu",
-	 10,121)
-	 clip(3,8,121,111)
-	 map(0,0,0,0,16,8)
-	 map(0,0,0,56,16,8)
-	 llama(x,y)
-end
 
 
 
@@ -172,20 +171,20 @@ end
 
 function update_plane()
 	if btn(0) then 
-		x=max(x-1,1)
-		xx=max(xx-1,21)
+		x=max(x-1,-2)
+		xx=max(xx-1,30)
 	end
 	if btn(1) then 
-		x=min(x+1,94)
-		xx=min(xx+1,114)
+		x=min(x+1,98)
+		xx=min(xx+1,130)
 	end
 	if btn(2) then 
-		y=max(y-1,7) 
-		yy=max(yy-1,27)
+		y=max(y-1,-1)
+		yy=max(yy-1,31)
 	end
 	if btn(3) then 
-		y=min(y+1,87)
-		yy=min(yy+1,107) 
+		y=min(y+1,96)
+		yy=min(yy+1,128) 
 	end	
 	if btnp(4) then state="menu" end
 end
@@ -193,24 +192,20 @@ end
 
 function update_cylinder()
 	if btn(0) then 
-		x=(x-1)%120
-		xx=(xx-1)%120
+		x=(x-1)%128
+		xx=(xx-1)%128
 	end
 	if btn(1) then
-	   	x=(x+1)%120 
-		xx=(xx+1)%120
+	   	x=(x+1)%128 
+		xx=(xx+1)%128
 	end
 	if btn(2) then
-	   	y=(y-1)%112 
-		yy=(yy-1)%112
-	end
-		if btn(2) then 
-		y=max(y-1,7) 
-		yy=max(yy-1,27)
+		y=max(y-1,-1)
+		yy=max(yy-1,31)
 	end
 	if btn(3) then 
-		y=min(y+1,87)
-		yy=min(yy+1,107) 
+		y=min(y+1,96)
+		yy=min(yy+1,128) 
 	end	
 	if btnp(4) then state="menu" end
 end
@@ -249,20 +244,20 @@ end
 
 function update_torus()
 	if btn(0) then 
-		x=(x-1)%120
-		xx=(xx-1)%120
+		x=(x-1)%128
+		xx=(xx-1)%128
 	end
 	if btn(1) then
-	   	x=(x+1)%120 
-		xx=(xx+1)%120
+	   	x=(x+1)%128
+		xx=(xx+1)%128
 	end
 	if btn(2) then
-	   	y=(y-1)%112 
-		yy=(yy-1)%112
+	   	y=(y-1)%128
+		yy=(yy-1)%128
 	end
 	if btn(3) then
-	   	y=(y+1)%112
-		yy=(yy+1)%112
+	   	y=(y+1)%128
+		yy=(yy+1)%128
 	end	
 	if btnp(4) then state="menu" end
 end
@@ -286,14 +281,11 @@ end
 function _draw()
 	if state=="menu" then
 		draw_menu()
-	elseif state=="plane" then
-		draw_plane()
-	elseif state=="cylinder" then
-		draw_cylinder()
-	elseif state=="mobius" then
-		draw_mobius()
-	elseif state=="torus" then
-		draw_torus()
+	elseif (state=="plane" or
+	        state=="cylinder" or
+		state=="mobius" or
+		state=="torus") then
+		draw_surface()
 	end
 end
 __gfx__
