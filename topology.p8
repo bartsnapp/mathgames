@@ -9,8 +9,8 @@ function _init()
 	state="menu"
 	select=0 -- menu item selected
 	facing="left"
-	x=47 y=59
-	xx=67 -- to allow peaking across the slide
+	x=47 y=47
+	xx=67 yy=67-- to allow peaking across the slide
 	palt(13,true)
 	palt(0,false)		
 end	
@@ -23,16 +23,26 @@ function llama(x,y)
 	then facing="right"
 	 if 0<=x and x<=128 
  	then
- 		spr(1,x,y-16,4,4,true)
+ 		spr(1,x,y,4,4,true)
  	else
  		spr(1,x,114-(y-16),4,4,true,true) 
 		end
+	end
+	-- second llama
+	if btn(1) or facing=="right"
+	then facing="right"
+	 --if 0<=x and x<=128 
+ 	--then
+ 		spr(5,xx-20,yy-20,4,4,true)
+ 	--else
+ 	--	spr(1,xx+17,114-(y-16),4,4,true,true) 
+	--	end
 	end
 	if btn(0) or facing=="left"
 	 then facing="left"
 	 	if 0<=x and x<=128 
  		then
-		 	spr(1,x,(y-16),4,4)	
+		 	spr(1,x,y,4,4)	
 	 	else
 	 		spr(1,x,114-(y-16),4,4,false,true)
 		end
@@ -42,7 +52,7 @@ function llama(x,y)
 	 then facing="left"
 	 	--if 0<=x and x<=128 
  		--then
-		 	spr(1,xx-20,(y-16),4,4)	
+		 	spr(1,xx-20,yy-20,4,4)	
 	 --	else
 	 		--spr(1,xx+17,114-(y-16),4,4,false,true)
 		--end
@@ -160,19 +170,47 @@ end
 
 
 function update_plane()
-	if btn(0) then x=max(x-1,17) end
-	if btn(1) then x=min(x+1,110) end
-	if btn(2) then y=max(y-1,23) end
-	if btn(3) then y=min(y+1,103) end	
+	if btn(0) then 
+		x=max(x-1,1)
+		xx=max(xx-1,21)
+	end
+	if btn(1) then 
+		x=min(x+1,94)
+		xx=min(xx+1,114)
+	end
+	if btn(2) then 
+		y=max(y-1,7) 
+		yy=max(yy-1,27)
+	end
+	if btn(3) then 
+		y=min(y+1,87)
+		yy=min(yy+1,107) 
+	end	
 	if btnp(4) then state="menu" end
 end
 
 
 function update_cylinder()
-	if btn(0) then x=(x-1)%128 end
-	if btn(1) then x=(x+1)%128 end
-	if btn(2) then y=max(y-1,23) end
-	if btn(3) then y=min(y+1,103) end		
+	if btn(0) then 
+		x=(x-1)%120
+		xx=(xx-1)%120
+	end
+	if btn(1) then
+	   	x=(x+1)%120 
+		xx=(xx+1)%120
+	end
+	if btn(2) then
+	   	y=(y-1)%112 
+		yy=(yy-1)%112
+	end
+		if btn(2) then 
+		y=max(y-1,7) 
+		yy=max(yy-1,27)
+	end
+	if btn(3) then 
+		y=min(y+1,87)
+		yy=min(yy+1,107) 
+	end	
 	if btnp(4) then state="menu" end
 end
 
@@ -194,12 +232,21 @@ end
 
 function update_torus()
 	if btn(0) then 
-		x=(x-1)%128 
-		xx=(xx-1)%128
+		x=(x-1)%120
+		xx=(xx-1)%120
 	end
-	if btn(1) then x=(x+1)%128 end
-	if btn(2) then y=(y-1)%128 end
-	if btn(3) then y=(y+1)%128 end	
+	if btn(1) then
+	   	x=(x+1)%120 
+		xx=(xx+1)%120
+	end
+	if btn(2) then
+	   	y=(y-1)%112 
+		yy=(yy-1)%112
+	end
+	if btn(3) then
+	   	y=(y+1)%112
+		yy=(yy+1)%112
+	end	
 	if btnp(4) then state="menu" end
 end
 -->8
