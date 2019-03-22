@@ -49,45 +49,32 @@ function llamaorientable(x,xx,y,yy)
 end
 
 function llamamobius(x,xx,y,yy)
-	 if btn(0) or facing=="left"
+	 if ((btn(0) or facing=="left"))
 	 then facing="left"
-	 	if 0<=x and x<=105
- 		then
-		 	spr(1,x,y,4,4)	
-	 	else
-	 		spr(5,x+120,95-y,4,4,false,true)
-		end
-	end
-	--second llama
-	if btn(0) or facing=="left"
-	 then facing="left"
-	 	if -24<=x and x<=104 
- 		then
-		 	spr(1,xx-20,yy-20,4,4)	
-	 	else
-	 		spr(1,(xx-20)+120,115-yy,4,4,false,true)
-		end
-	end
-
-	if btn(1) or facing=="right"
-	then facing="right"
-	 if 0<=x and x<=120 
- 	then
- 		spr(1,x,y,4,4,true)
- 	else
- 		spr(1,x,95-(y),4,4,true,true) 
-		end
-	end
-	-- second llama
-	if btn(1) or facing=="right"
-	then facing="right"
-	 if 0<=x and x<=104
- 	then
- 		spr(1,xx-20,yy-20,4,4,true)
- 	else
- 		spr(1,xx-148,115-yy,4,4,true,true) 
-		end
-	end
+	 if x>-2 then 
+ 	      spr(1,x,y,4,4)
+	      spr(1,xx-32,yy-32,4,4)
+	      spr(1,x,yy-32,4,4)
+	      spr(1,xx-32,y,4,4)
+	 elseif xx>5 then
+	      spr(1,x%128,y,4,4,false,true)
+	      spr(1,xx-32,yy-32,4,4)
+	      spr(1,x,yy-32,4,4)
+	      spr(1,xx-32,y,4,4)
+	 else
+	      spr(1,x%128,y,4,4,false,true)
+	      spr(1,xx-32,yy-32,4,4,false,true)
+	      spr(1,x,yy-32,4,4)
+	      spr(1,xx-32,y,4,4)
+	      end
+	 end
+	 if ((btn(1) or facing=="right") and (not btn(0)))
+	 then facing="right"
+ 	      spr(1,x,y,4,4,true)
+	      spr(1,xx-32,yy-32,4,4,true)
+	      spr(1,x,yy-32,4,4,true)
+	      spr(1,xx-32,y,4,4,true)
+ 	 end
 end
 -->8
 -- draw commands
@@ -213,30 +200,26 @@ end
 
 function update_mobius()
 	if btn(0) then 
-		x=max(x-1,-280)
-		xx=max(xx-1,-280) 
+		x=max(x-1,-256)
+		xx=max(xx-1,-256) 
 	end
 	if btn(1) then 
 		x=min(x+1,256)
 		xx=min(xx+1,256) 
 	end
 	if x==256 then x=0 end
-	if x==-280 then x=120 end
+	if x==-256 then x=128 end
 	if xx==256 then x=0 end
-	if xx==-280 then x=120 end
+	if xx==-256 then x=128 end
 
 
         if btn(2) then
-	   	y=(y-1)%112 
-		yy=(yy-1)%112
-	end
-		if btn(2) then 
-		y=max(y-1,7) 
-		yy=max(yy-1,27)
+	   y=max(y-1,-1)
+	   yy=max(yy-1,31)
 	end
 	if btn(3) then 
-		y=min(y+1,87)
-		yy=min(yy+1,107) 
+	   y=min(y+1,96)
+	   yy=min(yy+1,128) 
 	end	
 	if btnp(4) then state="menu" end
 end
