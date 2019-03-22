@@ -51,22 +51,24 @@ end
 function llamamobius(x,xx,y,yy)
 	 if ((btn(0) or facing=="left"))
 	 then facing="left"
-	 if x>-2 then 
- 	      spr(1,x,y,4,4)
-	      spr(1,xx-32,yy-32,4,4)
-	      spr(1,x,yy-32,4,4)
-	      spr(1,xx-32,y,4,4)
-	 elseif xx>5 then
-	      spr(1,x%128,y,4,4,false,true)
-	      spr(1,xx-32,yy-32,4,4)
-	      spr(1,x,yy-32,4,4)
-	      spr(1,xx-32,y,4,4)
-	 else
-	      spr(1,x%128,y,4,4,false,true)
-	      spr(1,xx-32,yy-32,4,4,false,true)
-	      spr(1,x,yy-32,4,4)
-	      spr(1,xx-32,y,4,4)
-	      end
+	 if x>-2 then spr(1,x,y,4,4)
+	      else spr(1,x%128,128-(y+16),4,4,false,true)
+	 end
+	 if xx>6 then spr(1,xx-32,yy-32,4,4)
+	      else spr(1,xx-32,128-(yy-32-16),4,4,false,true)
+	 end
+	      --spr(1,x,yy-32,4,4)
+	      --spr(1,xx-32,y,4,4)
+	 --else
+	      --spr(1,xx-32,yy-32,4,4)
+	      --spr(1,x,yy-32,4,4)
+	      --spr(1,xx-32,y,4,4)
+	 --else
+	      --spr(1,x%128,y,4,4,false,true)
+	      --spr(1,xx-32,yy-32,4,4,false,true)
+	      --spr(1,x,yy-32,4,4)
+	      --spr(1,xx-32,y,4,4)
+	      
 	 end
 	 if ((btn(1) or facing=="right") and (not btn(0)))
 	 then facing="right"
@@ -199,11 +201,13 @@ end
 
 
 function update_mobius()
-	if btn(0) then 
-		x=max(x-1,-256)
-		xx=max(xx-1,-256) 
+	if btnp(0) then 
+		x=max(x-1,-128)
+		if x==-128 then x=128 end
+		xx=max(xx-1,-128)
+		if xx==-128 then xx=128 end
 	end
-	if btn(1) then 
+	if btnp(1) then 
 		x=min(x+1,256)
 		xx=min(xx+1,256) 
 	end
