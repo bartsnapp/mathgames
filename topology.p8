@@ -28,6 +28,9 @@ function llama(x,xx,y,yy)
 	 elseif state=="mobius"
 	 then
 	 llamamobius(x,xx,y,yy)
+	 elseif state=="klein"
+	 then
+	 llamamobius(x,xx,y,yy)
 	 end
 end
 
@@ -48,34 +51,27 @@ function llamaorientable(x,xx,y,yy)
  	 end
 end
 
+
+offvflip=32
+
 function llamamobius(x,xx,y,yy)
 	 if ((btn(0) or facing=="left"))
 	 then facing="left"
 	 if x>-2 then spr(1,x,y,4,4)
-	      else spr(1,x%128,128-(y+16),4,4,false,true)
+	    else spr(1,x%128,128-(y+offvflip),4,4,false,true)
 	 end
 	 if xx>6 then spr(1,xx-32,yy-32,4,4)
-	      else spr(1,xx-32,128-(yy-32-16),4,4,false,true)
+	    else spr(1,128+(xx-32),128-(yy-32+offvflip),4,4,false,true)
 	 end
-	      --spr(1,x,yy-32,4,4)
-	      --spr(1,xx-32,y,4,4)
-	 --else
-	      --spr(1,xx-32,yy-32,4,4)
-	      --spr(1,x,yy-32,4,4)
-	      --spr(1,xx-32,y,4,4)
-	 --else
-	      --spr(1,x%128,y,4,4,false,true)
-	      --spr(1,xx-32,yy-32,4,4,false,true)
-	      --spr(1,x,yy-32,4,4)
-	      --spr(1,xx-32,y,4,4)
-	      
 	 end
 	 if ((btn(1) or facing=="right") and (not btn(0)))
 	 then facing="right"
- 	      spr(1,x,y,4,4,true)
-	      spr(1,xx-32,yy-32,4,4,true)
-	      spr(1,x,yy-32,4,4,true)
-	      spr(1,xx-32,y,4,4,true)
+ 	 if x>-2 then spr(1,x,y,4,4,true)
+	    else spr(1,x%128,128-(y+offvflip),4,4,true,true)
+	 end
+	 if xx>6 then spr(1,xx-32,yy-32,4,4,true)
+	    else spr(1,128+(xx-32),128-(yy-32+offvflip),4,4,true,true)
+	 end
  	 end
 end
 -->8
@@ -88,6 +84,7 @@ function draw_menu()
 		"cylinder",
 		"mobius strip",
 		"torus",
+		"klein bottle",
 		"sphere",
 		"real projective plane"
 		}
@@ -99,7 +96,7 @@ function draw_menu()
 		print(options[i],10,33+10*(i-1),8)
 	end
 	print(options[select+1],10,33+10*(select),10)
-	print(select,20,90)
+	print(select,20,110)
 end
 
 -- tutorials
@@ -115,6 +112,8 @@ function draw_surface()
 	 print("mobius strip",10,1,0)
 	 elseif state=="torus" then
 	 print("torus",10,1,0)
+	 elseif state=="klein" then
+	 print("klein bottle",10,1,0)
 	 end
 	 print("press z to go back to menu",
 	 10,122,0)
@@ -149,6 +148,10 @@ function update_menu()
 	if (btnp(4) and select==3) 
 	then 
 		state="torus"
+	end
+	if (btnp(4) and select==4) 
+	then 
+		state="klein"
 	end
 	if btnp(3) then 
 		select=(select+1)%(#options)
@@ -201,22 +204,19 @@ end
 
 
 function update_mobius()
-	if btnp(0) then 
+	if btn(0) then 
 		x=max(x-1,-128)
 		if x==-128 then x=128 end
 		xx=max(xx-1,-128)
 		if xx==-128 then xx=128 end
 	end
-	if btnp(1) then 
-		x=min(x+1,256)
-		xx=min(xx+1,256) 
+	if btn(1) then 
+		x=min(x+1,128)
+		if x==128 then x=-128 end
+		xx=min(xx+1,128)
+		if xx==128 then xx=-128 end
 	end
-	if x==256 then x=0 end
-	if x==-256 then x=128 end
-	if xx==256 then x=0 end
-	if xx==-256 then x=128 end
-
-
+	
         if btn(2) then
 	   y=max(y-1,-1)
 	   yy=max(yy-1,31)
@@ -248,6 +248,32 @@ function update_torus()
 	end	
 	if btnp(4) then state="menu" end
 end
+
+
+function update_klein()
+	if btn(0) then 
+		x=max(x-1,-128)
+		if x==-128 then x=128 end
+		xx=max(xx-1,-128)
+		if xx==-128 then xx=128 end
+	end
+	if btn(1) then 
+		x=min(x+1,128)
+		if x==128 then x=-128 end
+		xx=min(xx+1,128)
+		if xx==128 then xx=-128 end
+	end
+	
+        if btn(2) then
+	   	y=(y-1)%128
+		yy=(yy-1)%128
+	end
+	if btn(3) then
+	   	y=(y+1)%128
+		yy=(yy+1)%128
+	end
+	if btnp(4) then state="menu" end
+end
 -->8
 -- main udpate and draw
 
@@ -262,6 +288,8 @@ function _update()
 		update_mobius()
 	elseif state=="torus" then
 		update_torus()
+	elseif state=="klein" then
+		update_klein()	
 	end
 end
 
@@ -271,7 +299,8 @@ function _draw()
 	elseif (state=="plane" or
 	        state=="cylinder" or
 		state=="mobius" or
-		state=="torus") then
+		state=="torus" or
+		state=="klein") then
 		draw_surface()
 	end
 end
