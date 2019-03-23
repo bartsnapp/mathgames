@@ -8,12 +8,16 @@ __lua__
 function _init()
 	state="menu"
 	select=0 -- menu item selected
-	facing="left"
 	palt(13,true)
 	palt(0,false)
-	x=47 y=47
-	xx=79 yy=79-- to allow peaking across the slide
+	
 end	
+
+function centerllama()
+	 facing="left"
+	 x=47 y=47
+	 xx=79 yy=79-- to allow peaking across the slide
+end
 
 -->8
 -- llama code
@@ -295,6 +299,7 @@ end
 
 function _draw()
 	if state=="menu" then
+	   	centerllama()
 		draw_menu()
 	elseif (state=="plane" or
 	        state=="cylinder" or
