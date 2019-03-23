@@ -9,10 +9,10 @@ function _init()
 	state="menu"
 	select=0 -- menu item selected
 	facing="left"
+	palt(13,true)
+	palt(0,false)
 	x=47 y=47
 	xx=79 yy=79-- to allow peaking across the slide
-	palt(13,true)
-	palt(0,false)		
 end	
 
 -->8
@@ -281,7 +281,7 @@ function _update()
 	if state=="menu" then
 		update_menu()
 	elseif state=="plane" then
-		update_plane()
+	        update_plane()
 	elseif state=="cylinder" then
 		update_cylinder()
 	elseif state=="mobius" then
