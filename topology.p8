@@ -61,20 +61,36 @@ offvflip=32
 function llamamobius(x,xx,y,yy)
 	 if ((btn(0) or facing=="left"))
 	 then facing="left"
-	 if x>-2 then spr(1,x,y,4,4)
-	    else spr(1,x%128,128-(y+offvflip),4,4,false,true)
+	 if x>-2 then
+	    spr(1,x,y,4,4)
+	    spr(1,x,yy-32,4,4)
+	    else
+	    spr(1,x%128,128-(y+offvflip),4,4,false,true)
+	    spr(1,x%128,128-(yy-32+offvflip),4,4,false,true)
 	 end
-	 if xx>6 then spr(1,xx-32,yy-32,4,4)
-	    else spr(1,128+(xx-32),128-(yy-32+offvflip),4,4,false,true)
+	 if xx>6 then
+	 spr(1,xx-32,yy-32,4,4)
+	 spr(1,xx-32,y,4,4)
+	    else
+	    spr(1,128+(xx-32),128-(yy-32+offvflip),4,4,false,true)
+	    spr(1,128+(xx-32),128-(y+offvflip),4,4,false,true)
 	 end
 	 end
 	 if ((btn(1) or facing=="right") and (not btn(0)))
 	 then facing="right"
- 	 if x>-2 then spr(1,x,y,4,4,true)
-	    else spr(1,x%128,128-(y+offvflip),4,4,true,true)
+ 	 if x>-2 then
+	    spr(1,x,y,4,4,true)
+	    spr(1,x,yy-32,4,4,true)
+	    else
+	    spr(1,x%128,128-(y+offvflip),4,4,true,true)
+	    spr(1,x%128,128-(yy-32+offvflip),4,4,true,true)
 	 end
-	 if xx>6 then spr(1,xx-32,yy-32,4,4,true)
-	    else spr(1,128+(xx-32),128-(yy-32+offvflip),4,4,true,true)
+	 if xx>6 then
+	 spr(1,xx-32,yy-32,4,4,true)
+	 spr(1,xx-32,y,4,4,true)
+	    else
+	    spr(1,128+(xx-32),128-(yy-32+offvflip),4,4,true,true)
+	    spr(1,128+(xx-32),128-(y+offvflip),4,4,true,true)
 	 end
  	 end
 end
