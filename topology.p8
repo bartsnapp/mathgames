@@ -357,12 +357,16 @@ function update_rp()
 	end
 	
         if btn(2) then
-	   	y=(y-1)%128
-		yy=(yy-1)%128
+		y=max(y-1,-128)
+		if y==-128 then y=128 end
+		yy=max(yy-1,-128)
+		if yy==-128 then yy=128 end	
 	end
 	if btn(3) then
-	   	y=(y+1)%128
-		yy=(yy+1)%128
+		y=min(y+1,128)
+		if y==128 then y=-128 end
+		yy=min(yy+1,128)
+		if yy==128 then yy=-128 end
 	end
 	if btnp(4) then state="menu" end
 end
