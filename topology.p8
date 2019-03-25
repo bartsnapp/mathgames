@@ -35,6 +35,9 @@ function llama(x,xx,y,yy)
 	 elseif state=="klein"
 	 then
 	 llamamobius(x,xx,y,yy)
+	 elseif state=="rp"
+	 then
+	 llamarp(x,xx,y,yy)
 	 end
 end
 
@@ -172,6 +175,8 @@ function draw_surface()
 	 print("torus",10,1,0)
 	 elseif state=="klein" then
 	 print("klein bottle",10,1,0)
+	 elseif state=="rp" then
+	 print("real projective plane",10,1,0)
 	 end
 	 print("press z to go back to menu",
 	 10,122,0)
@@ -210,6 +215,10 @@ function update_menu()
 	if (btnp(4) and select==4) 
 	then 
 		state="klein"
+	end
+	if (btnp(4) and select==6) 
+	then 
+		state="rp"
 	end
 	if btnp(3) then 
 		select=(select+1)%(#options)
@@ -332,6 +341,31 @@ function update_klein()
 	end
 	if btnp(4) then state="menu" end
 end
+
+function update_rp()
+	if btn(0) then 
+		x=max(x-1,-128)
+		if x==-128 then x=128 end
+		xx=max(xx-1,-128)
+		if xx==-128 then xx=128 end
+	end
+	if btn(1) then 
+		x=min(x+1,128)
+		if x==128 then x=-128 end
+		xx=min(xx+1,128)
+		if xx==128 then xx=-128 end
+	end
+	
+        if btn(2) then
+	   	y=(y-1)%128
+		yy=(yy-1)%128
+	end
+	if btn(3) then
+	   	y=(y+1)%128
+		yy=(yy+1)%128
+	end
+	if btnp(4) then state="menu" end
+end
 -->8
 -- main udpate and draw
 
@@ -347,7 +381,9 @@ function _update()
 	elseif state=="torus" then
 		update_torus()
 	elseif state=="klein" then
-		update_klein()	
+		update_klein()
+	elseif state=="rp" then
+		update_rp()		
 	end
 end
 
@@ -359,7 +395,8 @@ function _draw()
 	        state=="cylinder" or
 		state=="mobius" or
 		state=="torus" or
-		state=="klein") then
+		state=="klein" or
+		state=="rp") then
 		draw_surface()
 	end
 end
