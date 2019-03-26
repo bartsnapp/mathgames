@@ -41,6 +41,13 @@ function llama(x,xx,y,yy)
 	 end
 end
 
+function llamaspr(facing)
+	 if facing=="left" then return 1
+	 elseif facing=="right" then return 5 end
+end
+
+
+
 function llamaorientable(x,xx,y,yy)
 	 if ((btn(0) or facing=="left"))
 	 then facing="left"
@@ -98,6 +105,7 @@ function llamamobius(x,xx,y,yy)
  	 end
 end
 
+offhflip=32
 
 function llamarp(x,xx,y,yy)
 	 if ((btn(0) or facing=="left"))
@@ -105,35 +113,43 @@ function llamarp(x,xx,y,yy)
 	 if x>-2 then
 	    spr(1,x,y,4,4)
 	    spr(1,x,yy-32,4,4)
-	    else
+	 elseif x<=-2 then
 	    spr(1,x%128,128-(y+offvflip),4,4,false,true)
 	    spr(1,x%128,128-(yy-32+offvflip),4,4,false,true)
 	 end
-	 if xx>6 then
-	 spr(1,xx-32,yy-32,4,4)
-	 spr(1,xx-32,y,4,4)
-	    else
+	 if xx>6 and y>-1 then
+	    spr(1,xx-32,yy-32,4,4)
+	    spr(1,xx-32,y,4,4)
+	 else
 	    spr(1,128+(xx-32),128-(yy-32+offvflip),4,4,false,true)
 	    spr(1,128+(xx-32),128-(y+offvflip),4,4,false,true)
 	 end
 	 end
+
 	 if ((btn(1) or facing=="right") and (not btn(0)))
 	 then facing="right"
  	 if x>-2 then
 	    spr(5,x,y,4,4)
 	    spr(5,x,yy-32,4,4)
-	    else
+	 else
 	    spr(5,x%128,128-(y+offvflip),4,4,false,true)
 	    spr(5,x%128,128-(yy-32+offvflip),4,4,false,true)
 	 end
 	 if xx>6 then
-	 spr(5,xx-32,yy-32,4,4)
-	 spr(5,xx-32,y,4,4)
-	    else
+	    spr(5,xx-32,yy-32,4,4)
+	    spr(5,xx-32,y,4,4)
+	 else
 	    spr(5,128+(xx-32),128-(yy-32+offvflip),4,4,false,true)
 	    spr(5,128+(xx-32),128-(y+offvflip),4,4,false,true)
 	 end
- 	 end
+	 end
+
+	 if y<-1 then
+	    spr(llamaspr(facing),128-(x+offhflip),y%128,4,4,true,false)
+	    spr(llamaspr(facing),128-(xx-32+offhflip),y%128,4,4,true,false)
+	    spr(llamaspr(facing),128-(x+offhflip),128+(yy-32),4,4,true,false)
+	    spr(llamaspr(facing),128-(xx-32+offhflip),128+(yy-32),4,4,true,false)
+	 end
 end
 -->8
 -- draw commands
