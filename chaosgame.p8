@@ -9,12 +9,6 @@ __lua__
 function _init()
 	state="menu"
 	select=0 -- menu item selected
-	--x=63
-	--y=63
-	--startpts={}
-	--midpts={} -- change name to midpts
-	--startdone=false
-	--color=1
 end
 
 -- adds return to menu
