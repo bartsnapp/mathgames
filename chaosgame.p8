@@ -2,6 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
 -- chaos game
+-- bart snapp
 -- also sound effects!
 
 
@@ -87,7 +88,6 @@ function draw_menu()
 		print(options[i],10,33+10*(i-1),8)
 	end
 	print(options[select+1],10,33+10*(select),10)
-	print(select,20,110)
 end
 
 
