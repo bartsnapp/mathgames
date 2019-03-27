@@ -123,8 +123,8 @@ end
 
 function drawmidpts(xx,yy,startpoints)
 	pointselector=ceil(rnd(#startpts))
-	x=(startpts[pointselector][1]+xx)/2
-	y=(startpts[pointselector][2]+yy)/2
+	x=(startpts[pointselector][1]+xx)/(2)
+	y=(startpts[pointselector][2]+yy)/(2)
 	add(midpts,{x,y,startpts[pointselector][3]})
 end
 
@@ -176,7 +176,7 @@ function update_upto()
 		sfx(0)
 		drawmidpts(x,y,startpoints)
 	elseif btnp(5) then
-		for i=1,20 do
+		for i=1,100 do
 			sfx(0)
 		drawmidpts(x,y,startpoints)
 		end

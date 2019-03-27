@@ -19,6 +19,8 @@ function centerllama()
 	 xx=79 yy=79-- to allow peaking across the slide
 end
 
+-- adds return to menu
+menuitem(1, "return to menu", function() state="menu" end)
 -->8
 -- llama code
 
@@ -261,7 +263,6 @@ function update_plane()
 		y=min(y+1,96)
 		yy=min(yy+1,128) 
 	end	
-	if btnp(4) then state="menu" end
 end
 
 
@@ -282,7 +283,6 @@ function update_cylinder()
 		y=min(y+1,96)
 		yy=min(yy+1,128) 
 	end	
-	if btnp(4) then state="menu" end
 end
 
 
@@ -308,7 +308,6 @@ function update_mobius()
 	   y=min(y+1,96)
 	   yy=min(yy+1,128) 
 	end	
-	if btnp(4) then state="menu" end
 end
 
 
@@ -329,7 +328,6 @@ function update_torus()
 	   	y=(y+1)%128
 		yy=(yy+1)%128
 	end	
-	if btnp(4) then state="menu" end
 end
 
 
@@ -355,7 +353,6 @@ function update_klein()
 	   	y=(y+1)%128
 		yy=(yy+1)%128
 	end
-	if btnp(4) then state="menu" end
 end
 
 function update_rp()
@@ -384,7 +381,6 @@ function update_rp()
 		yy=min(yy+1,128)
 		if yy==128 then yy=-128 end
 	end
-	if btnp(4) then state="menu" end
 end
 -->8
 -- main udpate and draw
