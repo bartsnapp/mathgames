@@ -2,14 +2,6 @@ pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
 -- chaos game
--- three points
--- todo: 
--- add a menu, allowing 
--- three points, and then
--- between 3 and the number of 
--- colors points. then allow 
--- user to place the points 
--- with the same controls
 -- also sound effects!
 
 
@@ -157,7 +149,7 @@ function update_three()
 		sfx(0)
 		drawmidpts(x,y,startpoints)
 	elseif btnp(5) then
-		for i=1,20 do
+		for i=1,100 do
 			sfx(0)
 		drawmidpts(x,y,startpoints)
 		end
