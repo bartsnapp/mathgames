@@ -25,7 +25,7 @@ __lua__
 
 function _init()
 	choices={}
-	permutations ={
+	permutations={
 	{1,2,3},
 	{1,3,2},
 	{2,1,3},
@@ -33,14 +33,12 @@ function _init()
 	{3,1,2},
 	{3,2,1}
 	}
+	choice_order=1
 end
 -->8
 -- draw
 
 -- two digit multiplication
-x = flr(rnd(100))
-y = flr(rnd(100))
-z = x*y
 function ques_mult(x,y)
 	print(x,40,63)
 	print("x",50,63)
@@ -48,7 +46,7 @@ function ques_mult(x,y)
 	print("=",65,63)
 end
 
-function choice_builder(z)
+function choice_builder(choices,z)
    if flr(rnd(2))==1 then 
       choices[1]=ceil(.95*z)
    else
@@ -66,13 +64,12 @@ function choice_builder(z)
    end
 end
 
-choice_order
-=permutations[ceil(rnd(6))]
+--choice_order=ceil(rnd(6))
 
-function answers(choices,choice_order)
-	print(choices[choice_order[1]],10,100)
-	print(choices[choice_order[2]],10,110)
-	print(choices[choice_order[3]],10,120)
+function answers(permutations,choices,choice_order)
+   print(choices[permutations[choice_order][1]],10,100)
+   print(choices[permutations[choice_order][2]],10,110)
+   print(choices[permutations[choice_order][3]],10,120)
 end
 
 function _draw()
@@ -80,7 +77,7 @@ function _draw()
    print("every answer below is wrong",10,10)
    print("which answer is closest?",10,20)
    ques_mult(x,y)
-   answers(choices,choice_order)
+   answers(permutations,choices,choice_order)
 end
 
 
@@ -91,6 +88,11 @@ end
 
 -- two digit multiplication
 function _update()
-
-
+   if btnp(4) then
+      x = flr(rnd(100))
+      y = flr(rnd(100))
+      z = x*y
+      choice_order=ceil(rnd(6))
+      choice_builder(choices,z)
+   end
 end
