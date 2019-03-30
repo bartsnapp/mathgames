@@ -9,7 +9,7 @@ __lua__
 function _init()
    state="menu"
    select=0 -- menu item selected
-   r={.5,.5,.5,.45,3/8,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3}
+   r={.5,.5,.5,.47,3/8,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3}
 end
 
 -- adds return to menu
@@ -106,11 +106,11 @@ function update_menu()
    y=63
    color=1
    startdone=false
-   if (btnp(4) and select==0) 
+   if (btnp(5) and select==0) 
    then 
       state="three"
    end
-   if (btnp(4) and select==1) 
+   if (btnp(5) and select==1) 
    then 
       state="upto"
    end
@@ -136,14 +136,14 @@ function update_three()
       if btn(1) then x=min(x+1,122) end
       if btn(2) then y=max(y-1,5) end
       if btn(3) then y=min(y+1,122) end
-      if btnp(4) then
+      if btnp(5) then
 	 sfx(0) 
 	 add(midpts,{x,y,7}) 
       end
-   elseif btnp(4) then
+   elseif btnp(5) then
       sfx(0)
       drawmidpts(x,y,startpoints)
-   elseif btnp(5) then
+   elseif btnp(4) then
       for i=1,100 do
 	 sfx(0)
 	 drawmidpts(x,y,startpoints)
@@ -158,25 +158,25 @@ function update_upto()
       if btn(1) then x=min(x+1,122) end
       if btn(2) then y=max(y-1,5) end
       if btn(3) then y=min(y+1,122) end
-      if btnp(4) then
+      if btnp(5) then
 	 sfx(0) 
 	 add(startpts,{x,y,color})
 	 color+=1
       end
-      if btnp(5) then startdone=true end
+      if btnp(4) then startdone=true end
    elseif #midpts==0 then
       if btn(0) then x=max(x-1,5) end
       if btn(1) then x=min(x+1,122) end
       if btn(2) then y=max(y-1,5) end
       if btn(3) then y=min(y+1,122) end
-      if btnp(4) then
+      if btnp(5) then
 	 sfx(0) 
 	 add(midpts,{x,y,7}) 
       end
-   elseif btnp(4) then
+   elseif btnp(5) then
       sfx(0)
       drawmidpts(x,y,startpoints)
-   elseif btnp(5) then
+   elseif btnp(4) then
       for i=1,100 do
 	 sfx(0)
 	 drawmidpts(x,y,startpoints)
@@ -187,5 +187,13 @@ end
 
 
 
+__gfx__
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+07777770077777700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+77700777770007770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+77077077770700770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+77000077770070770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+77077077770007770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+07777770077777700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __sfx__
 000100001c07029070320703007000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
