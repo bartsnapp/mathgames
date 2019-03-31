@@ -9,7 +9,8 @@ __lua__
 function _init()
    state="menu"
    select=0 -- menu item selected
-   r={.5,.5,.5,.47,3/8,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3}
+   r={.5,.5,.5,.45,.4,.35,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3}
+   s={1,1,1,1.22,1.5,1.85,1/3,1/3,1/3,1/3,1/3,1/3,1/3,1/3}
 end
 
 -- adds return to menu
@@ -63,7 +64,7 @@ end
 -- (x,y,color) to midpts
 function addpoint(midpts)
    for p in all(midpts) do
-      circfill(p[1],p[2],.5,p[3])
+      circfill(s[#startpts]*p[1],s[#startpts]*p[2],.5,p[3])
    end
 end
 
@@ -92,6 +93,9 @@ function draw_chaos()
    crosshairs(x,y)
    addstartpoint(startpts)
    addpoint(midpts)
+   -- if #midpts>1 then 
+   --    line(midpts[#midpts-1][1],midpts[#midpts-1][2],x,y,6)
+   -- end
 end
 
 -->8
@@ -138,7 +142,7 @@ function update_three()
       if btn(3) then y=min(y+1,122) end
       if btnp(5) then
 	 sfx(0) 
-	 add(midpts,{x,y,7}) 
+	 add(midpts,{x,y,7})
       end
    elseif btnp(5) then
       sfx(0)
