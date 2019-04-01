@@ -9,12 +9,27 @@ __lua__
 function _init()
    state="menu"
    select=0 -- menu item selected
-   r={.5,.5,.5,.45,.4,.35,.35,.25,.25,.2,.2,.2,.15,.15}
-   s={1,1,1,1.22,1.5,1.85,1.85,3,3,4,4,4,5.65,5.65}
+   r={.5,.5,.5,.45,.4,.35,.35,.25,.25,.2,.2,.2,.15,.15} -- r
+   s={1,1,1,1.22,1.5,1.857,1.857,3,3,4,4,4,5.67,5.67} -- scale factor
+   -- the scale factor is found by taking:
+   -- 1/(sum(r^n,(n,1,infinity)))
+   -- (1-r)/r
 end
 
 -- adds return to menu
 menuitem(1, "return to menu", function() state="menu" end)
+
+-- outline print
+-- borrowed from https://github.com/clowerweb/lib-pico8
+function print_ol(s,_x,_y,c1,c2)
+  for x=-1,1 do
+    for y=-1,1 do
+      print(s,_x+x,_y+y,c1)
+    end
+  end
+  print(s,_x,_y,c2)
+end
+
 -->8
 -- main udpate and draw
 
@@ -35,73 +50,10 @@ function _draw()
       draw_chaos()
    end
 end
--->8
--- draw function
 
--- draws initial crosshairs
--- only runs when midpts is empty
-function crosshairs(x,y)
-   if #midpts==0 then 
-      line(x+3,y,x+5,y,7)	
-      line(x-3,y,x-5,y,7)
-      line(x,y+3,x,y+5,7)
-      line(x,y-3,x,y-5,7)
-   end
-end
-
-
--- adds starting points of the form 
--- (x,y,color)
-function addstartpoint(startpts)
-   for p in all(startpts) do
-      circfill(p[1],p[2],1,p[3])
-   end
-end
-
-
-
--- adds points of the form 
--- (x,y,color) to midpts
-function addpoint(midpts)
-   for p in all(midpts) do
-      circfill(s[#startpts]*p[1],s[#startpts]*p[2],.5,p[3])
-   end
-end
-
--- main draw
-
--- menu
-function draw_menu()
-   options={
-      "three points",
-      "up to 14 points"
-   }
-   cls()
-   rect(0,0,127,127,6)
-   rect(0,0,127,20,6)
-   print("the chaos game",10,9,6)
-   for i=1,#options do
-      print(options[i],10,33+10*(i-1),8)
-   end
-   print(options[select+1],10,33+10*(select),10)
-end
-
-
-function draw_chaos()
-   if state=="three" then startpts={{63,1,8},{1,126,12},{126,126,3}} end
-   cls()
-   crosshairs(x,y)
-   addstartpoint(startpts)
-   addpoint(midpts)
-   -- if #midpts>1 then 
-   --    line(midpts[#midpts-1][1],midpts[#midpts-1][2],x,y,6)
-   -- end
-end
 
 -->8
 -- update function
-
-
 
 function update_menu()
    startpts={}
@@ -167,7 +119,10 @@ function update_upto()
 	 add(startpts,{x,y,color})
 	 color+=1
       end
-      if btnp(4) then startdone=true end
+      if btnp(4) then
+	 sfx(1)
+	 startdone=true
+      end
    elseif #midpts==0 then
       if btn(0) then x=max(x-1,5) end
       if btn(1) then x=min(x+1,122) end
@@ -190,8 +145,84 @@ end
 
 
 
+-->8
+-- draw function
 
+-- draws initial crosshairs
+-- only runs when midpts is empty
+function crosshairs(x,y)
+   if #midpts==0 then 
+      line(x+3,y,x+5,y,7)	
+      line(x-3,y,x-5,y,7)
+      line(x,y+3,x,y+5,7)
+      line(x,y-3,x,y-5,7)
+   end
+end
+
+
+-- adds starting points of the form 
+-- (x,y,color)
+function addstartpoint(startpts)
+   for p in all(startpts) do
+      circfill(p[1],p[2],1,p[3])
+   end
+end
+
+
+
+-- adds points of the form 
+-- (x,y,color) to midpts
+function addpoint(midpts)
+   for p in all(midpts) do
+      circfill(s[#startpts]*p[1],s[#startpts]*p[2],.5,p[3])
+   end
+end
+
+-- main draw
+
+-- menu
+function draw_menu()
+   options={
+      "three points",
+      "up to 14 points"
+   }
+   cls()
+   rect(0,0,127,127,6)
+   rect(0,0,127,20,6)
+   print_ol("the chaos game",10,9,9,1)
+   for i=1,#options do
+      print(options[i],10,33+10*(i-1),6)
+   end
+   print_ol(options[select+1],10,33+10*(select),12,1)
+   print("select a game and press",10,120,6)
+   spr(0,105,120)
+end
+
+function draw_chaos()
+   if state=="three" then startpts={{63,1,8},{1,126,12},{126,126,3}} end
+   cls()
+   crosshairs(x,y)
+   addstartpoint(startpts)
+   addpoint(midpts)
+   -- if #midpts>1 then 
+   --    line(midpts[#midpts-1][1],midpts[#midpts-1][2],x,y,6)
+   -- end
+end
+
+
+
+-- Button sprites borrowed from
+-- https://www.lexaloffle.com/bbs/?tid=30054
+-- post by Felice (https://www.lexaloffle.com/bbs/?uid=12874)
 __gfx__
+07777700077777000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+77707770770077700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+77000770770707700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+77070770770007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+07777700077777000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 07777770077777700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 77700777770007770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -201,3 +232,4 @@ __gfx__
 07777770077777700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __sfx__
 000100001c07029070320703007000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+001000002405021050160501105008000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
