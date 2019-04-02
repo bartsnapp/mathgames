@@ -119,7 +119,7 @@ function update_upto()
 	 add(startpts,{x,y,color})
 	 color+=1
       end
-      if btnp(4) then
+      if btnp(4) and # startpts>2 then
 	 sfx(1)
 	 startdone=true
       end
@@ -194,8 +194,8 @@ function draw_menu()
       print(options[i],10,33+10*(i-1),6)
    end
    print_ol(options[select+1],10,33+10*(select),12,1)
-   print("select a game and press",10,120,6)
-   spr(0,105,120)
+   print("select game and press",10,120,6)
+   spr(0,97,120)
 end
 
 function draw_chaos()
@@ -211,9 +211,9 @@ end
 
 
 
--- Button sprites borrowed from
+-- button sprites borrowed from
 -- https://www.lexaloffle.com/bbs/?tid=30054
--- post by Felice (https://www.lexaloffle.com/bbs/?uid=12874)
+-- post by felice (https://www.lexaloffle.com/bbs/?uid=12874)
 __gfx__
 07777700077777000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 77707770770077700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
