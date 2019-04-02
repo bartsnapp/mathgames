@@ -12,6 +12,9 @@ __lua__
 -- then down by 2's 
 -- then by 5's.
 -- then by 3's
+
+-- use code from collide
+
 -->8
 -- main update
 -->8
