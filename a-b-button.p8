@@ -16,7 +16,7 @@ bbin={{0,1,1,1,1,1,0},
 function abtn(x,y,c)
 	for i=1,5 do
 		for j=1,7 do
-		pset(j+x,i+y,c*abin[i][j])
+		pset(j+x-1,i+y-1,c*abin[i][j])
 		end
 	end	
 end
@@ -24,7 +24,7 @@ end
 function bbtn(x,y,c)
 	for i=1,5 do
 		for j=1,7 do
-		pset(j+x,i+y,c*bbin[i][j])
+		pset(j+x-1,i+y-1,c*bbin[i][j])
 		end
 	end	
 end
