@@ -5,3 +5,6 @@ __lua__
 -- bart snapp
 -- give orders via arrow keys
 -- execute 
+-- perhaps can only have a
+-- few sinnals to give robot
+
