@@ -54,6 +54,7 @@ end
 
 function update_success()
    if btnp(5) then
+      function validate(m,s) end
       spr1=flr(rnd(3))*2
       spr2=flr(rnd(3))*2
       spr3=flr(rnd(3))*2
@@ -64,6 +65,7 @@ function update_success()
 end
 
 function update_fail()
+   function validate(m,s) end
 end
 -->8
 -- draw
@@ -102,6 +104,8 @@ end
 function draw_success()
    cls()
    print("nice work!",10,63,7)
+   spr(64,10,120)
+   print("for next pattern", 20,120,7)
 end
 
 shake=0
