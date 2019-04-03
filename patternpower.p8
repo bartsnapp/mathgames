@@ -6,7 +6,13 @@ __lua__
 -- complete patterns
 
 function _init()
+   shake=0
    state="two_d_pattern"
+   spr1=flr(rnd(3))*2
+   spr2=flr(rnd(3))*2
+   spr3=flr(rnd(3))*2
+   missing=flr(rnd(8)) -- missing location
+   mspr=32 -- missing sprite
 end
 -->8
 -- main update and draw
@@ -74,35 +80,32 @@ end
 -->8
 -- draw
 
-spr1=flr(rnd(3))*2
-spr2=flr(rnd(3))*2
-spr3=flr(rnd(3))*2
-missing=flr(rnd(8)) -- missing location
-mspr=32 -- missing sprite
+
+
+function two_d_pattern(s1,s2,s3,m,s)
+   for i=0,2 do
+      spr(s1,0+48*i,56,2,2)
+      spr(s2,16+48*i,56,2,2)
+      spr(s3,32+48*i,56,2,2)
+   end
+   rectfill(128,56,144,71,0) -- removes hidden sprite
+   rectfill(16*m,
+	    56,
+	    16*m+15,
+	    71,0) 
+   spr(s,16*m,56,2,2)
+end
 
 
 function draw_two_d_pattern()
-	cls()
-	--line(0,56,127,56,14)
-	--line(0,72,127,72,14)
-	
-	for i=0,2 do
-	spr(spr1,0+48*i,56,2,2)
-	spr(spr2,16+48*i,56,2,2)
-	spr(spr3,32+48*i,56,2,2)
-	end
-	rectfill(128,56,144,71,0) -- removes hidden sprite
-	rectfill(16*missing,
-			56,
-			16*missing+15,
-			71,0) 
-	spr(mspr,16*missing,56,2,2)
-	validate(missing,mspr)
-	
-	print("⬆️⬇️⬅️➡️ cycles patterns", 10,110,7)
-	spr(64,10,120)
-	spr(65,18,120)
-	print("checks your answer", 30,120,7)
+   cls()
+   two_d_pattern(spr1,spr2,spr3,missing,mspr)
+   validate(missing,mspr)
+   
+   print("⬆️⬇️⬅️➡️ cycles patterns", 10,110,7)
+   spr(64,10,120)
+   spr(65,18,120)
+   print("checks your answer", 30,120,7)
 end
 
 
@@ -114,25 +117,12 @@ function draw_success()
    print("for next pattern", 30,120,7)
 end
 
-shake=0
 function draw_fail()
    shake+=1
    camera(3-rnd(3),0)
    cls()
-   for i=0,2 do
-      spr(spr1,0+48*i,56,2,2)
-      spr(spr2,16+48*i,56,2,2)
-      spr(spr3,32+48*i,56,2,2)
-   end
-   rectfill(128,56,144,71,0) -- removes hidden sprite
-   rectfill(16*missing,
-	    56,
-	    16*missing+15,
-	    71,0) 
-   spr(mspr,16*missing,56,2,2)
+   two_d_pattern(spr1,spr2,spr3,missing,mspr)
    if shake == 50 then
-      cls()
-      print("try again",10,63,7)
       shake = 0
       state="two_d_pattern"
       spr1=flr(rnd(3))*2
