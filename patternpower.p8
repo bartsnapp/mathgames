@@ -34,10 +34,14 @@ end
 -- update
 
 function update_two_d_pattern()
-	if btnp(5) then -- cycles through sprites
+	if btnp(0) or
+		btnp(1) or
+		btnp(2) or
+		btnp(3)
+	then -- cycles through sprites
 		mspr=(mspr+2)%6 -- mod total numebr of sprites
 	end
-	if btnp(4) then
+	if btnp(4) or btnp(5) then
 	   function validate(m,s) -- checks when btn 4 is pressed
 	      if (m*16)%48==0 then -- identifies what correct sprite is
 		 if spr1==s then state="success" else state="fail" end -- checks aginst correct sprite
@@ -53,7 +57,7 @@ function update_two_d_pattern()
 end
 
 function update_success()
-   if btnp(5) then
+   if btnp(4) or btnp(5) then
       function validate(m,s) end
       spr1=flr(rnd(3))*2
       spr2=flr(rnd(3))*2
@@ -94,10 +98,11 @@ function draw_two_d_pattern()
 			71,0) 
 	spr(mspr,16*missing,56,2,2)
 	validate(missing,mspr)
-	spr(64,10,110)
-	print("cycles patterns", 20,110,7)
-	spr(65,10,120)
-	print("checks your answer", 20,120,7)
+	
+	print("⬆️⬇️⬅️➡️ cycles patterns", 10,110,7)
+	spr(64,10,120)
+	spr(65,18,120)
+	print("checks your answer", 30,120,7)
 end
 
 
@@ -105,7 +110,8 @@ function draw_success()
    cls()
    print("nice work!",10,63,7)
    spr(64,10,120)
-   print("for next pattern", 20,120,7)
+   spr(65,18,120)
+   print("for next pattern", 30,120,7)
 end
 
 shake=0
