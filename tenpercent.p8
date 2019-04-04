@@ -36,14 +36,14 @@ function _init()
       {3,2,1}
    }
    choice_order=ceil(rnd(6))
-   x = flr(rnd(90))+10
-   y = flr(rnd(90))+10
-   z = x*y
-   choice_builder(choices,z) -- builds first answer list
+   --choice_builder(choices,z) -- builds first answer list
    pos=0;
 end
 
 -- adds a btn and b btn glyphs
+-- button sprites borrowed from
+-- https://www.lexaloffle.com/bbs/?tid=30054
+-- post by felice (https://www.lexaloffle.com/bbs/?uid=12874)
 abin={{0,1,1,1,1,1,0},
  	{1,1,1,0,1,1,1},
  	{1,1,0,0,0,1,1},
@@ -56,19 +56,23 @@ bbin={{0,1,1,1,1,1,0},
  	{1,1,0,0,0,1,1},
  	{0,1,1,1,1,1,0}}
 function abtn(x,y,c)
-	for i=1,5 do
-		for j=1,7 do
-		   pset(j+x-1,i+y-1,c*abin[i][j])
-		end
-	end	
+   for i=1,5 do
+      for j=1,7 do
+	 if abin[i][j] == 0 then else
+	    pset(j+x-1,i+y-1,c*abin[i][j])
+	 end
+      end
+   end	
 end
 
 function bbtn(x,y,c)
-	for i=1,5 do
-		for j=1,7 do
-		pset(j+x-1,i+y-1,c*bbin[i][j])
-		end
-	end	
+   for i=1,5 do
+      for j=1,7 do
+	 if bbin[i][j] == 0 then else
+	    pset(j+x-1,i+y-1,c*bbin[i][j])
+	 end
+      end	
+   end
 end
 
 -- adds return to menu
@@ -135,19 +139,19 @@ function draw_menu()
    abtn(97,120,6)
 end
 -- two digit multiplication
-function question_two_digi_mult()--x,y)
-	print(x,40,63)
-	print("x",50,63)
-	print(y,56,63)
-	print("=",65,63)
+function question_two_digit_mult()--x,y)
+	print(x,40,50)
+	print("x",50,50)
+	print(y,56,50)
+	print("=",65,50)
 end
 
 
 function question_integrate()--x,y)
-	print(x,40,63)
-	print("x",50,63)
-	print(y,56,63)
-	print("=",65,63)
+	print(x,40,50)
+	print("x",50,50)
+	print(y,56,50)
+	print("=",65,50)
 end
 
 function choice_builder()--choices,z)
@@ -169,11 +173,11 @@ function choice_builder()--choices,z)
 end
 
 function answers(p)--permutations,choices,choice_order)
-   print(choices[permutations[choice_order][1]],10,100,7)
-   print(choices[permutations[choice_order][2]],10,110,7)
-   print(choices[permutations[choice_order][3]],10,120,7)
-   rectfill(0,99+10*p,127,105+10*p,5)
-   print(choices[permutations[choice_order][1+p]],10,100+10*p,0)
+   print(choices[permutations[choice_order][1]],10,70,7)
+   print(choices[permutations[choice_order][2]],10,80,7)
+   print(choices[permutations[choice_order][3]],10,90,7)
+   rectfill(0,69+10*p,127,75+10*p,5)
+   print(choices[permutations[choice_order][1+p]],10,70+10*p,10)
 end
 
 function draw_question()
@@ -182,6 +186,11 @@ function draw_question()
    print("which answer is closest?",10,20,7)
    question()--x,y)
    answers(pos)--permutations,choices,choice_order)
+   line(0,105,127,105,6)
+   print("⬆️⬇️⬅️➡️ cycles answers", 10,110,6)
+   abtn(10,120,6)
+   bbtn(18,120,6)
+   print("checks your answer", 30,120,6)
 end
 
 
@@ -200,6 +209,10 @@ function update_menu()
    if (btnp(5) and select==0) 
    then 
       state="two_digit_mult"
+      x = flr(rnd(90))+10
+      y = flr(rnd(90))+10
+      z = x*y
+      choice_builder(choices,z) -- builds first answer list
    end
    if (btnp(5) and select==1) 
    then 
