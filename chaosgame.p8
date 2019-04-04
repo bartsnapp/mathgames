@@ -225,7 +225,6 @@ function draw_menu()
    end
    print_ol(options[select+1],10,33+10*(select),12,1)
    print("select game and press",10,120,6)
-   spr(0,97,120)
    abtn(97,120,6)
 end
 

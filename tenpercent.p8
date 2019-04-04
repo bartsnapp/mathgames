@@ -24,6 +24,8 @@ __lua__
 
 
 function _init()
+   state="menu"
+   select=0 -- menu item selected
    choices={}
    permutations={
       {1,2,3},
@@ -40,9 +42,87 @@ function _init()
    choice_builder(choices,z) -- builds first answer list
    pos=0;
 end
+
+-- adds a btn and b btn glyphs
+abin={{0,1,1,1,1,1,0},
+ 	{1,1,1,0,1,1,1},
+ 	{1,1,0,0,0,1,1},
+ 	{1,1,0,1,0,1,1},
+ 	{0,1,1,1,1,1,0}}
+
+bbin={{0,1,1,1,1,1,0},
+ 	{1,1,0,0,1,1,1},
+ 	{1,1,0,1,0,1,1},
+ 	{1,1,0,0,0,1,1},
+ 	{0,1,1,1,1,1,0}}
+function abtn(x,y,c)
+	for i=1,5 do
+		for j=1,7 do
+		   pset(j+x-1,i+y-1,c*abin[i][j])
+		end
+	end	
+end
+
+function bbtn(x,y,c)
+	for i=1,5 do
+		for j=1,7 do
+		pset(j+x-1,i+y-1,c*bbin[i][j])
+		end
+	end	
+end
+
+-- adds return to menu
+menuitem(1, "return to menu", function() state="menu" end)
+
+-- outline print
+-- borrowed from https://github.com/clowerweb/lib-pico8
+function print_ol(s,_x,_y,c1,c2)
+  for x=-1,1 do
+    for y=-1,1 do
+      print(s,_x+x,_y+y,c1)
+    end
+  end
+  print(s,_x,_y,c2)
+end
+-->8
+-- main udpate and draw
+
+function _update()
+   if state=="menu" then
+      update_menu()
+   elseif state=="two_digit_mult" then
+      update_two_digit_mult()
+   elseif state=="integrate" then
+      update_integrate()
+   end
+end
+
+function _draw()
+   if state=="menu" then
+      draw_menu()
+   elseif state=="two_digit_mult" or state=="integrate" then
+      draw_question()
+   end
+end
+
 -->8
 -- draw
-
+function draw_menu()
+   options={
+      "two digit multiplication",
+      "integrals"
+   }
+   cls()
+   rect(0,0,127,127,6)
+   rect(0,0,127,20,6)
+   print_ol("close!",10,9,9,1)
+   for i=1,#options do
+      print(options[i],10,33+10*(i-1),6)
+   end
+   print_ol(options[select+1],10,33+10*(select),12,1)
+   print("select game and press",10,120,6)
+   abtn(97,120,6)
+end
 -- two digit multiplication
 function question()--x,y)
 	print(x,40,63)
@@ -69,8 +149,6 @@ function choice_builder()--choices,z)
    end
 end
 
---choice_order=ceil(rnd(6))
-
 function answers(p)--permutations,choices,choice_order)
    print(choices[permutations[choice_order][1]],10,100,7)
    print(choices[permutations[choice_order][2]],10,110,7)
@@ -79,7 +157,7 @@ function answers(p)--permutations,choices,choice_order)
    print(choices[permutations[choice_order][1+p]],10,100+10*p,0)
 end
 
-function _draw()
+function draw_question()
    cls()
    print("every answer below is wrong",10,10,7)
    print("which answer is closest?",10,20,7)
@@ -93,9 +171,33 @@ end
 -->8
 -- update
 
--- two digit multiplication
+function update_menu()
+   startpts={}
+   midpts={}
+   x=63
+   y=63
+   color=1
+   startdone=false
+   if (btnp(5) and select==0) 
+   then 
+      state="two_digit_mult"
+   end
+   if (btnp(5) and select==1) 
+   then 
+      state="integrate"
+   end
+   if btnp(3) then 
+      select=(select+1)%(#options)
+   elseif btnp(2) then 
+      select=(select-1)%(#options)
+   end
+end
 
-function _update()
+
+
+
+-- two digit multiplication
+function update_two_digit_mult()
    if btnp(1) or btnp(3) then
       pos+=1
    end
