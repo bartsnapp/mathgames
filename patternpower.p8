@@ -132,6 +132,7 @@ end
 
 function draw_two_d_pattern()
    cls()
+   camera(0,0)
    two_d_pattern(spr1,spr2,spr3,missing,mspr)
    validate(missing,mspr)
    
