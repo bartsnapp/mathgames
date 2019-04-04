@@ -17,6 +17,9 @@ function _init()
 end
 
 -- adds a btn and b btn glyphs
+-- button sprites borrowed from
+-- https://www.lexaloffle.com/bbs/?tid=30054
+-- post by felice (https://www.lexaloffle.com/bbs/?uid=12874)
 abin={{0,1,1,1,1,1,0},
  	{1,1,1,0,1,1,1},
  	{1,1,0,0,0,1,1},
@@ -238,12 +241,6 @@ function draw_chaos()
    --    line(midpts[#midpts-1][1],midpts[#midpts-1][2],x,y,6)
    -- end
 end
-
-
-
--- button sprites borrowed from
--- https://www.lexaloffle.com/bbs/?tid=30054
--- post by felice (https://www.lexaloffle.com/bbs/?uid=12874)
 __sfx__
 000100001c07029070320703007000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000002405021050160501105008000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

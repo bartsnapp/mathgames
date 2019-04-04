@@ -105,6 +105,17 @@ function _draw()
    end
 end
 
+function question()
+   if state=="menu" then
+   elseif state=="two_digit_mult" then
+      question_two_digit_mult()
+   elseif state=="integrate" then
+      question_integrate()
+   end
+end
+
+
+
 -->8
 -- draw
 function draw_menu()
@@ -124,7 +135,15 @@ function draw_menu()
    abtn(97,120,6)
 end
 -- two digit multiplication
-function question()--x,y)
+function question_two_digi_mult()--x,y)
+	print(x,40,63)
+	print("x",50,63)
+	print(y,56,63)
+	print("=",65,63)
+end
+
+
+function question_integrate()--x,y)
 	print(x,40,63)
 	print("x",50,63)
 	print(y,56,63)
