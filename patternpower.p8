@@ -6,7 +6,7 @@ __lua__
 -- complete patterns
 
 function _init()
-   shake=0
+   pause=0
    state="two_d_pattern"
    spr1=flr(rnd(3))*2
    spr2=flr(rnd(3))*2
@@ -96,15 +96,7 @@ function update_two_d_pattern()
 end
 
 function update_success()
-   if btnp(4) or btnp(5) then
-      function validate(m,s) end
-      spr1=flr(rnd(3))*2
-      spr2=flr(rnd(3))*2
-      spr3=flr(rnd(3))*2
-      missing=flr(rnd(8)) -- missing location
-      mspr=32 -- missing sprite
-      state="two_d_pattern"
-      end
+   function validate(m,s) end
 end
 
 function update_fail()
@@ -145,19 +137,29 @@ end
 
 function draw_success()
    cls()
+   pause+=1
    print("nice work!",10,63,7)
-   abtn(10,120,7)
-   bbtn(18,120,7)
-   print("for next pattern", 30,120,7)
+   if pause == 25 then
+      pause = 0
+      state="two_d_pattern"
+      spr1=flr(rnd(3))*2
+      spr2=flr(rnd(3))*2
+      spr3=flr(rnd(3))*2
+      missing=flr(rnd(8)) -- missing location
+      mspr=32 -- missing spriteend
+   end   
+ --  abtn(10,120,7)
+  -- bbtn(18,120,7)
+   --print("for next pattern", 30,120,7)
 end
 
 function draw_fail()
-   shake+=1
+   pause+=1
    camera(3-rnd(3),0)
    cls()
    two_d_pattern(spr1,spr2,spr3,missing,mspr)
-   if shake == 50 then
-      shake = 0
+   if pause == 25 then
+      pause = 0
       state="two_d_pattern"
       spr1=flr(rnd(3))*2
       spr2=flr(rnd(3))*2
