@@ -83,11 +83,11 @@ function update_two_d_pattern()
 	if (btnp(4) or btnp(5)) and mspr !=32 then
 	   function validate(m,s) -- checks when btn 4 is pressed
 	      if (m*16)%48==0 then -- identifies what correct sprite is
-		 if spr1==s then state="success" else state="fail" end -- checks aginst correct sprite
+		 if spr1==s then state="success" sfx(1) else state="fail" end -- checks aginst correct sprite
 	      elseif (m*16)%48==16 then
-		 if spr2==s then state="success" else state="fail" end
+		 if spr2==s then state="success" sfx(1) else state="fail" end
 	      elseif (m*16)%48==32 then
-		 if spr3==s then state="success" else state="fail" end
+		 if spr3==s then state="success" sfx(1) else state="fail" end
 	      end
 	   end
 	else
@@ -204,3 +204,4 @@ __gfx__
 00000056500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __sfx__
 000100000b1500b1500b1500c1500d1500f15011150131501515016150191501b1501e1502115023150271502c1502f150351503715038150391503815038150391502a150191500000000000000000000000000
+0003000012050120501205015e5012050130501405015050180501b0501d0502bf500b0500e05020f50140501a0501d0502405033f5015050170501b0501e05024050270502f0503605039050000000000000000
