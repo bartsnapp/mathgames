@@ -1,9 +1,11 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
--- pattern power
--- bart snapp
+-- pattern power by bart snapp
+
 -- complete patterns
+
+cartdata("pattern_power_1")
 
 function _init()
    pause=0
