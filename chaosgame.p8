@@ -2,7 +2,9 @@ pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
 -- chaos game
--- bart snapp
+-- by bart snapp
+
+
 -- also sound effects!
 
 
