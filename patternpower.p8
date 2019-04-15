@@ -75,35 +75,51 @@ end
 -->8
 -- update
 
+
+
+function validate(m,s) -- m=missing, and s=mspr, s is chosen sprite
+   if s == 32 then -- has anything been selected? 32 is address of ?
+   elseif (((m*16)%48==0 and spr1==s) or
+	 ((m*16)%48==16 and spr2==s) or
+	 ((m*16)%48==32 and spr3==s))
+   then state="success" sfx(1) 
+   else state="fail" sfx(2)
+   end
+end
+
 function update_two_d_pattern()
 	if btnp(0) or
 		btnp(1) or
 		btnp(2) or
 		btnp(3)
 	then -- cycles through sprites
-		mspr=(mspr+2)%6 -- mod total numebr of sprites
+		sfx(0)
+		mspr=(mspr+2)%6 -- cycle through number of sprites
 	end
-	if (btnp(4) or btnp(5)) and mspr !=32 then
-	   function validate(m,s) -- checks when btn 4 is pressed
-	      if (m*16)%48==0 then -- identifies what correct sprite is
-		 if spr1==s then state="success" sfx(1) else state="fail" end -- checks aginst correct sprite
-	      elseif (m*16)%48==16 then
-		 if spr2==s then state="success" sfx(1) else state="fail" end
-	      elseif (m*16)%48==32 then
-		 if spr3==s then state="success" sfx(1) else state="fail" end
-	      end
-	   end
-	else
-	   function validate(m,s) end
+	if btnp(4) or btnp(5) then 
+	   validate(missing,mspr)
 	end
+end
+
+function prep_next_two_d_pattern()
+   pause+=1
+   if pause == 20 then
+      pause = 0
+      state="two_d_pattern"
+      spr1=flr(rnd(3))*2
+      spr2=flr(rnd(3))*2
+      spr3=flr(rnd(3))*2
+      missing=flr(rnd(8)) -- missing location
+      mspr=32 -- missing sprite
+   end
 end
 
 function update_success()
-   function validate(m,s) end
+   prep_next_two_d_pattern()
 end
 
 function update_fail()
-   function validate(m,s) end
+   prep_next_two_d_pattern()
 end
 -->8
 -- draw
@@ -120,56 +136,40 @@ function two_d_pattern(s1,s2,s3,m,s)
    rectfill(16*m,
 	    56,
 	    16*m+15,
-	    71,0) 
-   spr(s,16*m,56,2,2)
+	    71,0)
+   if s == 32 then -- initial question mark
+      pal(7,ceil(t/2)%16)
+      pal(6,(ceil(t/2)-1)%16)
+      pal(5,(ceil(t/2)-2)%16)
+      spr(s,16*m,56,2,2)
+      pal(7,7)
+   else spr(s,16*m,56,2,2)
+   end
 end
 
-
+t=1
 function draw_two_d_pattern()
    cls()
+   t+=1
    camera(0,0)
    two_d_pattern(spr1,spr2,spr3,missing,mspr)
-   validate(missing,mspr)
-   
    print("⬆️⬇️⬅️➡️ cycles patterns", 10,110,7)
    abtn(10,120,7)
    bbtn(18,120,7)
    print("checks your answer", 30,120,7)
+   t%=50
 end
 
 
 function draw_success()
    cls()
-   pause+=1
    print("nice work!",10,63,7)
-   if pause == 25 then
-      pause = 0
-      state="two_d_pattern"
-      spr1=flr(rnd(3))*2
-      spr2=flr(rnd(3))*2
-      spr3=flr(rnd(3))*2
-      missing=flr(rnd(8)) -- missing location
-      mspr=32 -- missing spriteend
-   end   
- --  abtn(10,120,7)
-  -- bbtn(18,120,7)
-   --print("for next pattern", 30,120,7)
 end
 
 function draw_fail()
-   pause+=1
    camera(3-rnd(3),0)
    cls()
    two_d_pattern(spr1,spr2,spr3,missing,mspr)
-   if pause == 25 then
-      pause = 0
-      state="two_d_pattern"
-      spr1=flr(rnd(3))*2
-      spr2=flr(rnd(3))*2
-      spr3=flr(rnd(3))*2
-      missing=flr(rnd(8)) -- missing location
-      mspr=32 -- missing spriteend
-   end
 end
 
 __gfx__
@@ -206,5 +206,6 @@ __gfx__
 00000067600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000056500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __sfx__
-000100000b1500b1500b1500c1500d1500f15011150131501515016150191501b1501e1502115023150271502c1502f150351503715038150391503815038150391502a150191500000000000000000000000000
+000100002085026850268502585024850218501e8001c8003580011800128001280013800348002180020800208001f8001e8001e8001d8001d8001c8001c80022e001c8001b80020e001b800000000000000000
 0003000012050120501205015e5012050130501405015050180501b0501d0502bf500b0500e05020f50140501a0501d0502405033f5015050170501b0501e05024050270502f0503605039050000000000000000
+00030000016503f650016503f650016503f650016503f650016503f650016503f6500660009600376001560017600336000200002000020000100000000000000000000000000000000000000000000000000000
