@@ -7,11 +7,28 @@ __lua__
 function _init()
  palt(14, true) -- beige color as transparency is true
  palt(0, false) -- black color as transparency is false
+	tour={}	
+	t=1 -- timer for flashing
+end
+
+-- to figure out when knight
+-- tour is complete, remove
+-- elements from the list unitl
+-- the list is empty
+
+function tour_build(n)
+	for	j = 1,n do
+	for i = 1,n do
+	add(tour,{i,j})
+	end
+	end
 end
 -->8
 -- updates
 
 function _update()
+-- we can identify each move as
+-- a number between 0 and 7
 end
 -->8
 -- draws
@@ -23,16 +40,51 @@ function knight(n,x,y) -- note x,y is in chessboard squares 1 to n...
    end
 end
 
-function moves(n,x,y) -- note x,y is in chessboard squares 1 to n...
-   local color=10
-   rect((x)*(128/n),  (y-3)*(128/n),  (x+1)*(128/n)-1,(y-2)*(128/n)-1,color) --ur 0
-   rect((x+1)*(128/n),(y-2)*(128/n),  (x+2)*(128/n)-1,(y-1)*(128/n)-1,color)--ru 1
-   rect((x+1)*(128/n),(y+1)*(128/n)-1,(x+2)*(128/n)-1,(y)*(128/n),color)--rd 2
-   rect((x)*(128/n),  (y+2)*(128/n)-1,(x+1)*(128/n)-1,(y+1)*(128/n),color) --dr 3
-   rect((x-2)*(128/n),(y+2)*(128/n)-1,(x-1)*(128/n)-1,(y+1)*(128/n),color) --dl 4
-   rect((x-3)*(128/n),(y+1)*(128/n)-1,(x-2)*(128/n)-1,(y)*(128/n),color)--ld 5
-   rect((x-3)*(128/n),(y-2)*(128/n),  (x-2)*(128/n)-1,(y-1)*(128/n)-1,color) --lu 6
-   rect((x-2)*(128/n),(y-3)*(128/n),  (x-1)*(128/n)-1,(y-2)*(128/n)-1,color) --ul 7
+-- you may want a different move fxn
+
+-- note: all of these moves are based on knights positon
+
+function move_0(n,x,y,c)
+   rect((x)*(128/n),  (y-3)*(128/n),  (x+1)*(128/n)-1,(y-2)*(128/n)-1,c) --ur 0
+end
+
+function move_1(n,x,y,c)
+   rect((x+1)*(128/n),(y-2)*(128/n),  (x+2)*(128/n)-1,(y-1)*(128/n)-1,c) --ru 1
+end
+
+function move_2(n,x,y,c)
+   rect((x+1)*(128/n),(y+1)*(128/n)-1,(x+2)*(128/n)-1,(y)*(128/n),c) --rd 2
+end
+
+function move_3(n,x,y,c)
+   rect((x)*(128/n),  (y+2)*(128/n)-1,(x+1)*(128/n)-1,(y+1)*(128/n),c) --dr 3
+end
+
+function move_4(n,x,y,c)
+   rect((x-2)*(128/n),(y+2)*(128/n)-1,(x-1)*(128/n)-1,(y+1)*(128/n),c) --dl 4
+end
+
+function move_5(n,x,y,c)
+   rect((x-3)*(128/n),(y+1)*(128/n)-1,(x-2)*(128/n)-1,(y)*(128/n),c) --ld 5
+end
+
+function move_6(n,x,y,c)
+   rect((x-3)*(128/n),(y-2)*(128/n),  (x-2)*(128/n)-1,(y-1)*(128/n)-1,c) --lu 6
+end
+
+function move_7(n,x,y,c)
+   rect((x-2)*(128/n),(y-3)*(128/n),  (x-1)*(128/n)-1,(y-2)*(128/n)-1,c) --ul 7
+end
+
+function moves(n,x,y,c) -- note x,y is in chessboard squares 1 to n...
+   move_0(n,x,y,c)
+   move_1(n,x,y,c)
+   move_2(n,x,y,c)
+   move_3(n,x,y,c)
+   move_4(n,x,y,c)
+   move_5(n,x,y,c)
+   move_6(n,x,y,c)
+   move_7(n,x,y,c)
 end
 
 -- the key pad can cycle in the clock order of the moves above. 
@@ -58,11 +110,15 @@ end
 
 
 function _draw()
-   cls()
-   num=8
+	t+=1
+	cls()
+ num=8
 	chessboard(num)
-	knight(num,3,3)
-	moves(num,3,3)
+	knight(num,3,6)
+	if t>=20 then
+	moves(num,3,6,11)
+	end
+	t%=40
 end
 __gfx__
 eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
