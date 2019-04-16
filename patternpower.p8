@@ -16,7 +16,10 @@ function _init()
    spr3=flr(rnd(3))*2
    missing=flr(rnd(8)) -- missing location
    mspr=32 -- missing sprite
+   start_time=time()
+   t=1 -- can surely be replaced by time
 end
+
 
 -- a and b btn
 abin={{0,1,1,1,1,1,0},
@@ -50,6 +53,15 @@ function bbtn(x,y,c)
       end	
    end
 end
+
+
+-- timer
+
+function init_timer()
+   start_time=time()
+end
+
+
 -->8
 -- main update and draw
 
@@ -124,6 +136,19 @@ end
 -->8
 -- draw
 
+function gametime(x,y)
+   if flr(10*time()-start_time)<10 then
+      print("00",x,y,7)
+      print(flr(10*time()-start_time),x+8,y,7)
+   elseif flr(10*time()-start_time)<100 then
+      print("0",x,y,7)
+      print(flr(10*time()-start_time),x+4,y,7)
+   else
+      print(flr(10*time()-start_time),x,y,7)
+   end
+end
+
+
 
 
 function two_d_pattern(s1,s2,s3,m,s)
@@ -147,9 +172,9 @@ function two_d_pattern(s1,s2,s3,m,s)
    end
 end
 
-t=1
 function draw_two_d_pattern()
    cls()
+   gametime(110,10)
    t+=1
    camera(0,0)
    two_d_pattern(spr1,spr2,spr3,missing,mspr)
