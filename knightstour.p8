@@ -7,8 +7,9 @@ __lua__
 function _init()
  palt(14, true) -- beige color as transparency is true
  palt(0, false) -- black color as transparency is false
-	tour={}	
-	t=1 -- timer for flashing
+ tour={}	
+ t=1 -- timer for flashing
+ mv=0
 end
 
 -- to figure out when knight
@@ -27,8 +28,11 @@ end
 -- updates
 
 function _update()
--- we can identify each move as
--- a number between 0 and 7
+   if btnp(0) then mv = (mv-1)%8
+   elseif btnp(1) then mv = (mv+1)%8
+   elseif btnp(2) then mv = (mv+1)%8
+   elseif btnp(3) then mv = (mv-1)%8
+   end
 end
 -->8
 -- draws
@@ -87,6 +91,27 @@ function moves(n,x,y,c) -- note x,y is in chessboard squares 1 to n...
    move_7(n,x,y,c)
 end
 
+function prejump(mv,n,x,y,c)
+   if mv==0 then
+      move_0(n,x,y,c)
+   elseif mv ==1 then 
+      move_1(n,x,y,c)
+   elseif mv ==2 then 
+      move_2(n,x,y,c)
+   elseif mv ==3 then 
+      move_3(n,x,y,c)
+   elseif mv ==4 then 
+      move_4(n,x,y,c)
+   elseif mv ==5 then 
+      move_5(n,x,y,c)
+   elseif mv ==6 then 
+      move_6(n,x,y,c)
+   elseif mv ==7 then 
+      move_7(n,x,y,c)
+   end
+end
+
+
 -- the key pad can cycle in the clock order of the moves above. 
 
 
@@ -116,8 +141,9 @@ function _draw()
 	chessboard(num)
 	knight(num,3,6)
 	if t>=20 then
-	moves(num,3,6,11)
+	   moves(num,3,6,11)
 	end
+	prejump(mv,num,3,6,8)
 	t%=40
 end
 __gfx__
