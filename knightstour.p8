@@ -5,11 +5,19 @@ __lua__
 -- by bart snapp
 
 function _init()
- palt(14, true) -- beige color as transparency is true
+ palt(14, true) -- pink color as transparency is true
  palt(0, false) -- black color as transparency is false
  tour={}	
  t=1 -- timer for flashing
  mv=0
+ x=3
+ y=6
+ num=8
+ for j=1,8 do -- for now	
+    for i=1,8 do -- for now
+       add(tour,{i,j})
+    end
+ end
 end
 
 -- to figure out when knight
@@ -17,22 +25,27 @@ end
 -- elements from the list unitl
 -- the list is empty
 
-function tour_build(n)
-	for	j = 1,n do
-	for i = 1,n do
-	add(tour,{i,j})
-	end
-	end
-end
+-- function tour_builder(n,tour)
+--    for j=1,8 do -- for now	
+--       for i=1,8 do -- for now
+-- 	 add(tour,{i,j})
+-- 	end
+--    end
+-- end
+
+-- tour_builder(num,tour)
+
 -->8
 -- updates
 
 function _update()
+   --if btnp(4) then tour_builder(num,tour) end
    if btnp(0) then mv = (mv-1)%8
    elseif btnp(1) then mv = (mv+1)%8
    elseif btnp(2) then mv = (mv+1)%8
    elseif btnp(3) then mv = (mv-1)%8
    end
+   if btnp(5) then jump(mv,n) end
 end
 -->8
 -- draws
@@ -112,12 +125,61 @@ function prejump(mv,n,x,y,c)
 end
 
 
+function jump(mv,n)
+   if mv==0 then
+      x+=1
+      y-=2
+   elseif mv==1 then
+      x+=2
+      y-=1
+   elseif mv==2 then
+      x+=2
+      y+=1
+   elseif mv==3 then
+      x+=1
+      y+=2
+   elseif mv==4 then
+      x-=1
+      y+=2
+   elseif mv==5 then
+      x-=2
+      y+=1
+   elseif mv==6 then
+      x-=2
+      y-=1
+   elseif mv==7 then
+      x-=1
+      y-=2
+   end
+end
+
+
+
+
 -- the key pad can cycle in the clock order of the moves above. 
+
+
+
+
+function tour_board(n,tour)
+   for i in all(tour) do
+      rectfill(0+(i[1]-1)*(128/n),
+	       0+(i[2]-1)*(128/n),
+	       128/n-1+(i[1]-1)*(128/n),128/n-1+(i[2]-1)*(128/n),
+	       squarecolor((i[1]-1)+(i[2]-1)))
+   end
+end
 
 
 function squarecolor(i)
 	if i%2==0 then return 15 -- beige
 	else return 4 -- brown
+	end
+end
+
+function toured_squarecolor(i)
+	if i%2==0 then return 12 -- light blue
+	else return 13 -- dark blue
 	end
 end
 
@@ -128,7 +190,7 @@ function chessboard(n)
 		0+i*(128/n),
 		0+j*(128/n),
 		128/n-1+i*(128/n),128/n-1+j*(128/n),
-		squarecolor(i+j))
+		toured_squarecolor(i+j))
 	end
 	end
 end
@@ -137,13 +199,15 @@ end
 function _draw()
 	t+=1
 	cls()
- num=8
+	del(tour,{x,y}) -- it doesn't know that {x,y}=={2,4} etc...
+	print(#tour,70,70)
 	chessboard(num)
-	knight(num,3,6)
+	tour_board(num,tour)
+	knight(num,x,y)
 	if t>=20 then
-	   moves(num,3,6,11)
+	   moves(num,x,y,11)
 	end
-	prejump(mv,num,3,6,8)
+	prejump(mv,num,x,y,8)
 	t%=40
 end
 __gfx__
