@@ -123,21 +123,25 @@ function update_menu()
    then 
       state="tour"
       num=5
+      x=ceil(rnd(num)) y=ceil(rnd(num))
    end
    if (btnp(5) and select==1) 
    then 
       state="tour"
       num=6
+      x=ceil(rnd(num)) y=ceil(rnd(num))
    end
    if (btnp(5) and select==2) 
    then 
       state="tour"
       num=7
+      x=ceil(rnd(num)) y=ceil(rnd(num))
    end
    if (btnp(5) and select==3) 
    then 
       state="tour"
-      num=7
+      num=8
+      x=ceil(rnd(num)) y=ceil(rnd(num))
    end
    create_tour(num)
    if btnp(3) then 
@@ -145,6 +149,7 @@ function update_menu()
    elseif btnp(2) then 
       select=(select-1)%(#options)
    end
+   mv_ctr=0
 end
 
 
@@ -196,9 +201,14 @@ end
 
 function update_tour()
    --if btnp(4) then tour_builder(num,tour) end
-   if btnp(0) or btnp(1) or btnp(2) or btnp(3) then mv = (mv+1)%8
+   if btnp(0) or btnp(1) or btnp(2) or btnp(3)
+   then
+      mv = (mv+1)%8
    end
-   if btnp(5) or btnp(6) then jump(mv,n) end
+   if btnp(5) or btnp(6) then
+      jump(mv,n)
+      mv_ctr += 1
+   end
    tour = deltour(tour,{x,y}) -- it doesn't know that {x,y}=={2,4} etc...
    edgebump()
 end
@@ -222,15 +232,15 @@ function draw_menu()
    cls()
    num=8
    chessboard(8,mcl,mcd)
-   if t==1 then x=ceil(rnd(8)) y=ceil(rnd(8)) end
+   if t==1 then x=ceil(rnd(num)) y=ceil(rnd(num)) end
    knight(8,x,y)
-   print_ol("knight's tour",10,9,9,1)
+   print_ol("knight's tour",38+3*sin(t/40),30+3*cos(t/40),10,1)
    for i=1,#options do
-      print(options[i],30,53+10*(i-1),6)
+      print(options[i],32,53+10*(i-1),6)
    end
-   print_ol(options[select+1],30,53+10*(select),12,1)
-   print("select tour and press",10,120,6)
-   abtn(97,120,6)
+   print_ol(options[select+1],32,53+10*(select),9,1)
+   print("select tour and press",18,120,6)
+   abtn(105,120,6)
    t%=40
 end
 
@@ -382,6 +392,18 @@ function draw_tour()
 	moves(num,x,y,11)
 	if t>=10 then
 	   prejump(mv,num,x,y,10)
+	end
+	print_ol("moves:",84,7,0,7)
+	if mv_ctr < 10 then
+	   print_ol(mv_ctr,118,7,0,7)
+	   print_ol("00",110,7,0,7)
+	elseif mv_ctr<100 then
+	   print_ol(mv_ctr,114,7,0,7)
+	   print_ol("0",110,7,0,7)
+	elseif mv_ctr>999 then
+	   mv_ctr=1000
+	   print_ol("xxx",110,7,0,7)
+	else print_ol(mv_ctr,110,7,0,7)
 	end
 	t%=20
 	line(0,127,127,127,0)
