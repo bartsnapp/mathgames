@@ -234,7 +234,7 @@ function draw_menu()
    chessboard(8,mcl,mcd)
    if t==1 then x=ceil(rnd(num)) y=ceil(rnd(num)) end
    knight(8,x,y)
-   print_ol("knight's tour",38+3*sin(t/40),30+3*cos(t/40),10,1)
+   print_ol("knight's tour",38+3*sin(t/40),30+3*cos(t/40),1,10)
    for i=1,#options do
       print(options[i],32,53+10*(i-1),6)
    end
