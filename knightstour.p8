@@ -212,6 +212,7 @@ end
 -- draws
 
 function draw_menu()
+   t+=1
    options={
       "tour a 5x5 board",
       "tour a 6x6 board",
@@ -219,16 +220,18 @@ function draw_menu()
       "tour an 8x8 board"
    }
    cls()
+   num=8
    chessboard(8,mcl,mcd)
-   rect(0,0,127,127,6)
-   rect(0,0,127,20,6)
+   if t==1 then x=ceil(rnd(8)) y=ceil(rnd(8)) end
+   knight(8,x,y)
    print_ol("knight's tour",10,9,9,1)
    for i=1,#options do
-      print(options[i],10,33+10*(i-1),6)
+      print(options[i],30,53+10*(i-1),6)
    end
-   print_ol(options[select+1],10,33+10*(select),12,1)
-   print("select game and press",10,120,6)
+   print_ol(options[select+1],30,53+10*(select),12,1)
+   print("select tour and press",10,120,6)
    abtn(97,120,6)
+   t%=40
 end
 
 
@@ -387,7 +390,7 @@ function draw_tour()
 end
 
 function draw_done()
-   print_ol("tour complete",40,63,10,1)
+   print_ol("tour complete!",35,60,10,1)
 end
 
 
