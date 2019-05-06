@@ -16,6 +16,7 @@ function _init()
    -- the scale factor is found by taking:
    -- 1/(sum(r^n,(n,1,infinity)))
    -- (1-r)/r
+   c=0 -- counter for b button (stops crash)
 end
 
 -- adds a btn and b btn glyphs
@@ -139,9 +140,12 @@ function update_three()
       sfx(0)
       drawmidpts(x,y,startpoints)
    elseif btnp(4) then
+      c+=1
       for i=1,100 do
 	 sfx(0)
-	 drawmidpts(x,y,startpoints)
+	 if c<105 then 
+	    drawmidpts(x,y,startpoints)
+	 end
       end
    end
 end
@@ -246,6 +250,7 @@ function draw_chaos()
    -- if #midpts>1 then 
    --    line(midpts[#midpts-1][1],midpts[#midpts-1][2],x,y,6)
    -- end
+   print(c,70,70,7)
 end
 __label__
 66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
