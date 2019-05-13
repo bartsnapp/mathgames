@@ -9,15 +9,14 @@ __lua__
 cartdata("pattern_power_1")
 
 function _init()
-   pause=0
-   state="two_d_pattern"
+   state="one_d_pattern"
    spr1=flr(rnd(3))*2
    spr2=flr(rnd(3))*2
    spr3=flr(rnd(3))*2
    missing=flr(rnd(8)) -- missing location
    mspr=32 -- missing sprite
    start_time=time()
-   t=1 -- can surely be replaced by time
+   t=0
 end
 
 
@@ -57,16 +56,39 @@ end
 
 -- timer
 
-function init_timer()
-   start_time=time()
+
+function print_timer(x,y,t) -- does the actual printing
+   if flr(t)<10 then
+      print("00",x,y,7)
+      print(t,x+8,y,7)
+   elseif t<100 then
+      print("0",x,y,7)
+      print(t,x+4,y,7)
+   else
+      print(t,x,y,7)
+   end
 end
+
+
+function gametime(x,y) -- has an if gate to decide what is shown
+   displayedtime=flr(10*time()-start_time)
+   if state=="success" then
+      print_timer(x,y,pause)
+   else
+      print_timer(x,y,displayedtime)
+   end
+end
+
+
 
 
 -->8
 -- main update and draw
 
 function _update()
-   if state=="two_d_pattern"
+   if state=="one_d_pattern"
+   then update_one_d_pattern()
+   elseif state=="two_d_pattern"
    then update_two_d_pattern()
    elseif state=="success"
    then update_success()
@@ -76,7 +98,9 @@ function _update()
 end
 
 function _draw()
-   if state=="two_d_pattern"
+   if state=="one_d_pattern"
+   then draw_one_d_pattern()
+   elseif state=="two_d_pattern"
    then draw_two_d_pattern()
    elseif state=="success"
    then draw_success()
@@ -88,18 +112,33 @@ end
 -- update
 
 
+function prep_next_one_d_pattern()
+   if displayedtime > pause-1 then
+      state="one_d_pattern"
+      spr1=flr(rnd(3))*2
+      spr2=flr(rnd(3))*2
+      spr3=flr(rnd(3))*2
+      missing=flr(rnd(8)) -- missing location
+      mspr=32 -- missing sprite
+   end
+end
 
-function validate(m,s) -- m=missing, and s=mspr, s is chosen sprite
+
+
+function validate_one(m,s) -- m=missing, and s=mspr, s is chosen sprite
    if s == 32 then -- has anything been selected? 32 is address of ?
    elseif (((m*16)%48==0 and spr1==s) or
 	 ((m*16)%48==16 and spr2==s) or
 	 ((m*16)%48==32 and spr3==s))
-   then state="success" sfx(1) 
+   then state="success" sfx(1)
+      pause = displayedtime 
+      start_time=start_time+10
    else state="fail" sfx(2)
+      pause = 0
    end
 end
 
-function update_two_d_pattern()
+function update_one_d_pattern()
 	if btnp(0) or
 		btnp(1) or
 		btnp(2) or
@@ -109,49 +148,24 @@ function update_two_d_pattern()
 		mspr=(mspr+2)%6 -- cycle through number of sprites
 	end
 	if btnp(4) or btnp(5) then 
-	   validate(missing,mspr)
+	   validate_one(missing,mspr)
 	end
 end
 
-function prep_next_two_d_pattern()
-   pause+=1
-   if pause == 20 then
-      pause = 0
-      state="two_d_pattern"
-      spr1=flr(rnd(3))*2
-      spr2=flr(rnd(3))*2
-      spr3=flr(rnd(3))*2
-      missing=flr(rnd(8)) -- missing location
-      mspr=32 -- missing sprite
-   end
-end
 
 function update_success()
-   prep_next_two_d_pattern()
+   prep_next_one_d_pattern()
 end
 
 function update_fail()
-   prep_next_two_d_pattern()
+   prep_next_one_d_pattern()
 end
 -->8
 -- draw
 
-function gametime(x,y)
-   if flr(10*time()-start_time)<10 then
-      print("00",x,y,7)
-      print(flr(10*time()-start_time),x+8,y,7)
-   elseif flr(10*time()-start_time)<100 then
-      print("0",x,y,7)
-      print(flr(10*time()-start_time),x+4,y,7)
-   else
-      print(flr(10*time()-start_time),x,y,7)
-   end
-end
 
-
-
-
-function two_d_pattern(s1,s2,s3,m,s)
+function one_d_pattern(s1,s2,s3,m,s)
+   local t=displayedtime%50
    for i=0,2 do
       spr(s1,0+48*i,56,2,2)
       spr(s2,16+48*i,56,2,2)
@@ -163,38 +177,45 @@ function two_d_pattern(s1,s2,s3,m,s)
 	    16*m+15,
 	    71,0)
    if s == 32 then -- initial question mark
-      pal(7,ceil(t/2)%16)
-      pal(6,(ceil(t/2)-1)%16)
-      pal(5,(ceil(t/2)-2)%16)
+      pal(7,ceil(10*t/2)%16)
+      pal(6,(ceil(10*t/2)-1)%16)
+      pal(5,(ceil(10*t/2)-2)%16)
       spr(s,16*m,56,2,2)
       pal(7,7)
    else spr(s,16*m,56,2,2)
    end
 end
 
-function draw_two_d_pattern()
+
+function two_d_pattern()
+   -- how this is draw depends on the symmetries.
+   -- and you are just doing the symmetries on the colors.
+end
+
+
+function draw_one_d_pattern()
    cls()
    gametime(110,10)
-   t+=1
    camera(0,0)
-   two_d_pattern(spr1,spr2,spr3,missing,mspr)
+   one_d_pattern(spr1,spr2,spr3,missing,mspr)
    print("⬆️⬇️⬅️➡️ cycles patterns", 10,110,7)
    abtn(10,120,7)
    bbtn(18,120,7)
    print("checks your answer", 30,120,7)
-   t%=50
 end
 
 
 function draw_success()
    cls()
+   gametime(110,10)
    print("nice work!",10,63,7)
 end
 
 function draw_fail()
    camera(3-rnd(3),0)
    cls()
-   two_d_pattern(spr1,spr2,spr3,missing,mspr)
+   gametime(110,10)
+   one_d_pattern(spr1,spr2,spr3,missing,mspr)
 end
 
 __gfx__

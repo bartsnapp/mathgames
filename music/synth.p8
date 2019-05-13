@@ -8,11 +8,13 @@ __lua__
 
 
 function _init()
-	poke(0x5f2d, 1)
+	--poke(0x5f2d, 1)
 	-- should make the keyboard
 	-- accessible
 end
 
+poke(24365,1)
+--poke(0x5f2d, 1)
 function _update()
 	while stat(30) do
 	if stat(31) == "z" 
@@ -63,7 +65,7 @@ function _update()
 	if stat(31) == "e"
 		then sfx(15)
 	end
-	end
+end
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
