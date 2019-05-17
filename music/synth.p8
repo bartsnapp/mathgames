@@ -16,7 +16,7 @@ end
 poke(24365,1)
 --poke(0x5f2d, 1)
 function _update()
-	while stat(30) do
+	--while stat(30) do
 	if stat(31) == "z" 
 		then sfx(0) 
 	end 
@@ -64,7 +64,7 @@ function _update()
 	end
 	if stat(31) == "e"
 		then sfx(15)
-	end
+	--end
 end
 end
 __gfx__
